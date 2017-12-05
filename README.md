@@ -35,11 +35,13 @@ Design and implement a **Shopping cart** using **PHP (Symfony)** and **HTML / CS
 * Listing products in categories
 * Add to cart functionality
 * Promotions for certain time interval
-** Promotions on certain products (% discount)
-** Promotions on all products (% discount) 
-** Promotions on certain categories (% discount)
-** Promotions for certain user criteria (registered more than X days, have more than X cash, etc…)
-** If two or more promotions collide on a date period for certain product – the biggest one applies only
+
+	** Promotions on certain products (% discount)
+	** Promotions on all products (% discount) 
+	** Promotions on certain categories (% discount)
+	** Promotions for certain user criteria (registered more than X days, have more than X cash, etc…)
+	** If two or more promotions collide on a date period for certain product – the biggest one applies only
+	
 * Visibility only of available products
 * Quantity visibility
 * Checkout the cart
