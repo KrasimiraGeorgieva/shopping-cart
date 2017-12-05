@@ -5,23 +5,23 @@ Design and implement a **Shopping cart** using **PHP (Symfony)** and **HTML / CS
 ## Requirements
 
 ### **Use PHP** – the major part of your work should be PHP written
-* You **must use Symfony Framework**
-* You have to additionally use **HTML5, CSS3** to create the content and to stylize your web application
-* You may optionally use **JavaScript, jQuery, Bootstrap**
-* Use **PHP 7+**
+- You **must use Symfony Framework**
+- You have to additionally use **HTML5, CSS3** to create the content and to stylize your web application
+- You may optionally use **JavaScript, jQuery, Bootstrap**
+- Use **PHP 7+**
 
 ### **User source control system**
-* **Use GitHub** or other source control system as project collaboration platform and commit your daily work
+- **Use GitHub** or other source control system as project collaboration platform and commit your daily work
 
 ### **Valid and high-quality PHP, HTML and CSS**
-* Follow the best practices for PHP development: http://www.phptherightway.com, https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md, http://symfony.com/doc/current/best_practices/index.html 
-* Validate (when possible) your HTML (http://validator.w3.org) and CSS code (http://css-validator.org)
-* Follow the best practices for **high-quality PHP, HTML and CSS**: good formatting, good code structure, consistent naming etc.
+- Follow the best practices for PHP development: http://www.phptherightway.com, https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md, http://symfony.com/doc/current/best_practices/index.html 
+- Validate (when possible) your HTML (http://validator.w3.org) and CSS code (http://css-validator.org)
+- Follow the best practices for **high-quality PHP, HTML and CSS**: good formatting, good code structure, consistent naming etc.
 
 ### **Usability, UX and browser support**
-* Your web application should be easy-to-use, with intuitive UI, with good usability (usability != beauty)
-* Ensure your web application works correctly in the latest HTML5-compatible browsers: Chrome, Firefox, IE, Opera, Safari (latest versions, desktop and mobile versions)
-* You do not need to support old browsers like IE9
+- Your web application should be easy-to-use, with intuitive UI, with good usability (usability != beauty)
+- Ensure your web application works correctly in the latest HTML5-compatible browsers: Chrome, Firefox, IE, Opera, Safari (latest versions, desktop and mobile versions)
+- You do not need to support old browsers like IE9
 
 ## Forbidden Techniques and Tools
 * Using Shopping cart systems (like OpenCart) is forbidden.
