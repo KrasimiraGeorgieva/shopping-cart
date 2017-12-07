@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'profile' %}
+
+{% block main %}
+<form name="authenticate" action="{{ path('user_profile') }}" method="post">
+    <div>
+        {{ user.email }}
+        <br>
+        {{ user.fullName }}
+    </div>
+    {#{{  form_row(form._token) }}#}
+</form>
+{% endblock %}
