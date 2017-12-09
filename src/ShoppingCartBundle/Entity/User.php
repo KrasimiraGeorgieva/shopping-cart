@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="ShoppingCartBundle\Repository\UserRepository")
  */
 class User implements UserInterface
@@ -62,7 +62,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function setFullName($fullName)
+    public function setFullName(string $fullName)
     {
         $this->fullName = $fullName;
 
@@ -86,7 +86,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
 
@@ -110,7 +110,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
@@ -138,7 +138,7 @@ class User implements UserInterface
     /**
      * @param string $confirm
      */
-    public function setConfirm($confirm)
+    public function setConfirm(string $confirm)
     {
         $this->confirm = $confirm;
     }
