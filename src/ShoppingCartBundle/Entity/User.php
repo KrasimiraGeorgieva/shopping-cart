@@ -2,6 +2,7 @@
 
 namespace ShoppingCartBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -43,7 +44,47 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var string
+     */
     private $confirm;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="ShoppingCartBundle\Entity\Role", inversedBy="users")
+     * @ORM\JoinTable(
+     *     name="users_roles", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     *     )
+     *
+     */
+    private $roles;
+
+    /**
+     * @var ArrayCollection|Product[]
+     *
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Product", mappedBy="client")
+     */
+    private $products;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="wallet", type="decimal", precision = 10, scale = 2, nullable=true)
+     */
+    private $wallet;
+
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+        $this->getWallet();
+    }
+
 
     /**
      * Get id
@@ -157,11 +198,87 @@ class User implements UserInterface
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
+     * @return array (Role|string)[] The user roles
      */
     public function getRoles()
     {
-        return [];
+        $stringRoles = [];
+        foreach ($this->roles as $role) {
+            /** @var $role Role */
+            $stringRoles[] = $role->getReachableRoles();
+        }
+        return $stringRoles;
+    }
+
+    /**
+     * @param Role $role
+     * @return User
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Product[]
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param ArrayCollection|Product[] $products
+     */
+    public function setProducts($products): void
+    {
+        $this->products = $products;
+    }
+
+    /**
+     * @param Product $product
+     * @return bool
+     */
+    public function isClient(Product $product)
+    {
+        return $product->getClientId() == $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditor()
+    {
+        return in_array("ROLE_EDITOR", $this->getRoles());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return in_array("ROLE_ADMIN", $this->getRoles());
+    }
+
+    /**
+     * Get wallet
+     *
+     * @return float
+     */
+    public function getWallet(): ?float
+    {
+        return $this->wallet;
+    }
+
+    /**
+     * Set wallet
+     *
+     * @param float $wallet
+     */
+    public function setWallet(float $wallet)
+    {
+        $this->wallet = $wallet;
     }
 
     /**

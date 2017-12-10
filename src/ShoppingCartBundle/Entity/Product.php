@@ -70,6 +70,23 @@ class Product
     private $category;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="client_id", type="integer")
+     */
+    private $clientId;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="ShoppingCartBundle\Entity\User", inversedBy="products")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     */
+    private $client;
+
+
+
+    /**
      * Get id
      *
      * @return int
@@ -232,13 +249,52 @@ class Product
      *
      * @return Product
      */
-    public function setCategory(Category $category = null): Product
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
 
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
 
+    /**
+     * @param int $clientId
+     *
+     * @return Product
+     */
+    public function setClientId(int $clientId):Product
+    {
+        $this->clientId = $clientId;
+
+        return $this;
+    }
+
+    /**
+     * @return \ShoppingCartBundle\Entity\User
+     */
+    public function getClient()
+    {
+        return $this->client->getFullName();
+    }
+
+
+    /**
+     * @param \ShoppingCartBundle\Entity\User $client
+     *
+     * @return Product
+     */
+    public function setClient(User $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
 }
 
