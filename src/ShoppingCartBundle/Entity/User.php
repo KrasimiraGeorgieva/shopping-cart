@@ -49,6 +49,8 @@ class User implements UserInterface
      */
     private $confirm;
 
+    private $newPassword;
+
     /**
      * @var ArrayCollection
      *
@@ -82,9 +84,8 @@ class User implements UserInterface
     {
         $this->products = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->getWallet();
+        $this->setWallet(255.66);
     }
-
 
     /**
      * Get id
@@ -118,6 +119,22 @@ class User implements UserInterface
     public function getFullName()
     {
         return $this->fullName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewPassword()
+    {
+        return $this->newPassword;
+    }
+
+    /**
+     * @param string $newPassword
+     */
+    public function setNewPassword(string $newPassword)
+    {
+        $this->newPassword = $newPassword;
     }
 
     /**
@@ -228,13 +245,13 @@ class User implements UserInterface
         return $this->products;
     }
 
-    /**
-     * @param ArrayCollection|Product[] $products
-     */
-    public function setProducts($products): void
-    {
-        $this->products = $products;
-    }
+//    /**
+//     * @param ArrayCollection|Product[] $products
+//     */
+//    public function setProducts($products): void
+//    {
+//        $this->products = $products;
+//    }
 
     /**
      * @param Product $product
@@ -266,7 +283,7 @@ class User implements UserInterface
      *
      * @return float
      */
-    public function getWallet(): ?float
+    public function getWallet()
     {
         return $this->wallet;
     }
@@ -276,7 +293,7 @@ class User implements UserInterface
      *
      * @param float $wallet
      */
-    public function setWallet(float $wallet)
+    public function setWallet( $wallet = 255.66)
     {
         $this->wallet = $wallet;
     }
@@ -314,4 +331,3 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 }
-
