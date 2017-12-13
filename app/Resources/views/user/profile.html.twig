@@ -3,12 +3,68 @@
 {% block body_id 'profile' %}
 
 {% block main %}
-<form name="authenticate" action="{{ path('user_profile') }}" method="post">
-    <div>
-        {{ user.email }}
-        <br>
-        {{ user.fullName }}
+
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" name="authenticate" action="{{ path('user_profile') }}" method="post">
+                <fieldset>
+                    <legend>{{ app.user.fullName }} Profile</legend>
+
+                    {#<div style="color: red">#}
+                        {#{{ form_errors(form) }}#}
+                    {#</div>#}
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_email">Email</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_email" value="{{ app.user.email }}" name="user[email]" required type="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_fullName">Full Name</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_fullName" value="{{ app.user.fullName }}" name="user[fullName]" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password"> Current Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="user_current_password"  name="user[password]">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password_first"> New Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="user_password_first"  name="user[password]">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password_second">Confirm New Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="user_password_second" name="user[confirm]">
+                        </div>
+                    </div>
+<hr>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password_second">Wallet</label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" id="user_wallet" name="user[wallet]"value="{{ user.wallet }}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12 col-sm-offset-2">
+                            <a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
-    {#{{  form_row(form._token) }}#}
-</form>
+
 {% endblock %}

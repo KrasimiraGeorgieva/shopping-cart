@@ -56,7 +56,23 @@
                     {#<li><a href="#">Contact</a></li>#}
 
                 </ul>
+
+
                 <ul class="nav navbar-nav navbar-right">
+                    {% if app.getUser() and app.getUser().isAdmin() %}
+                    <li>
+                        <a href="{{ path('admin_panel') }}">
+                            Admin Panel
+                        </a>
+                    </li>
+                        {% endif %}
+                        {% if app.getUser() %}
+                    <li>
+                        <a href="{{ path('user_profile') }}">
+                            {{ app.user.fullName }}
+                        </a>
+                    </li>
+                    {% endif %}
                     <li><a href="{{ path('security_login') }}"><span class="glyphicon glyphicon-user"></span> Login</a></li>
 
                     {#<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>#}
@@ -66,11 +82,11 @@
         </div>
     </nav>
 
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div id="my" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#" data-slide-to="0" class="active"></li>
+            <li data-target="#" data-slide-to="1"></li>
         </ol>
 
         <!-- Wrapper for slides -->
@@ -93,11 +109,11 @@
         </div>
 
         <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <a class="left carousel-control" href="#" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <a class="right carousel-control" href="#" role="button" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
@@ -109,55 +125,47 @@
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">BLACK FRIDAY DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-                        </div>
-                    </div>
+
                     <div class="col-sm-4">
                         <div class="panel panel-danger">
                             <div class="panel-heading">BLACK FRIDAY DEAL</div>
                             <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
+                            <div class="panel-footer" >Price: </div>
+                            <div class="panel-footer">Description: </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="panel panel-success">
                             <div class="panel-heading">BLACK FRIDAY DEAL</div>
                             <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
+                            <div class="panel-footer" >Price: </div>
+                            <div class="panel-footer">Description: </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">BLACK FRIDAY DEAL</div>
+                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+                            <div class="panel-footer" >Price: </div>
+                            <div class="panel-footer">Description: </div>
+                        </div>
+                    </div>
+
+                    {% for product in products %}
+                        <div class="col-sm-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h4><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></h4>
+                            </div>
+                                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+                                <div class="panel-footer" >Price: {{ product.price }}</div>
+                                <div class="panel-footer">Description: {{ product.description }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
                 </div>
             </div><br>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">BLACK FRIDAY DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">BLACK FRIDAY DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">BLACK FRIDAY DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-                        </div>
-                    </div>
-                </div>
-            </div><br><br>
         </div>
 </body>
 
