@@ -2,35 +2,26 @@
 
 {% block body %}
 
-<div class="col-sm-6">
+    <div class="container body-content span=8 offset=2">
     <div class="well">
         <form class="form-horizontal" action="{{ path('category_edit', {id: category.id}) }}" method="post">
-
             <fieldset>
-                <legend>Category edit</legend>
+                <legend>Edit Category</legend>
+
                 <div class="form-group">
-                    <div class="col-sm-12 ">
+                    <label class="col-sm-4 control-label" for="product_name">Name</label>
+                    <div class="col-sm-4 ">
                         <input type="text" class="form-control" id="category_name" name="category[name]" value="{{ category.name }}">
                     </div>
                 </div>
 
-                {{ form_row(form._token) }}
+                {{ form(edit_form._token) }}
                 <div class="form-group">
-                    <div class="col-sm-12 col-sm-offset-2">
-                        <a class="btn btn-default" href="{{ path('category_index', {id: category.id}) }}">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Edit</button>
-
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <a class="btn btn-default" href="{{ path('category_show', {id: category.id}) }}">Cancel</a>
+                        <button type="submit" class="btn btn-success">Edit</button>
                     </div>
                 </div>
-
-                {{ form_start(edit_form) }}
-                    {#{{ form_widget(edit_form) }}#}
-                    {#<input type="submit" value="Edit" />#}
-                {#{{ form_end(edit_form) }}#}
-                {#<li>#}
-                {#<a href="{{ path('category_index', {id: category.id}) }}">Back to categories list</a>#}
-                {#</li>#}
-
             </fieldset>
         </form>
     </div>

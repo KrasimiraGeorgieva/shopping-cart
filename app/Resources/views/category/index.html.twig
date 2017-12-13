@@ -3,48 +3,38 @@
 {% block body %}
 <div class="col-sm-8">
     <div class="well">
-        <div class="row">
-            <div class="col-sm-6">
-                <h1>Categories list</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="padding-right: 10px">No</th>
-                            <th style="padding-right: 70px">Name</th>
-                            <th style="padding-right: 70px"> </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for index,category in categories %}
-                        <tr>
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ category.name }}</td>
-                            <td>
-                                <ul>
-                                    <a class="btn btn-default btn-xs" href="{{ path('category_show', { 'id': category.id }) }}">show</a>
-                                    <a class="btn btn-success btn-xs"  href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
-                                    <a class="btn btn-danger btn-xs" href="{{ path('category_delete', { 'id': category.id }) }}">Delete</a>
-                                </ul>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <h1>Categories list</h1>
 
-        {#<div class="row">#}
-            {#<div class="col-sm-6">#}
-                {#<div class="pull-right" >#}
+            {#<h1 style="color:red">{{ msg }}</h1>#}
+
+    <table class="table-bordered" style="border: #3be6c4">
+        <thead>
+            <tr>
+                <th style="padding-right: 10px"><h4>No</h4></th>
+                <th style="padding-right: 70px"><h4>Name</h4></th>
+                <th style="padding-right: 70px"> </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for index,category in categories %}
+            <tr>
+                <td><h5>{{ index + 1 }}</h5></td>
+                <td><h5>{{ category.name }}</a></h5></td>
+                <td>
                     <ul>
-                        <a class="btn btn-default btn-lg" href="{{ path('category_new') }}">Add category</a>
+                        <a class="btn btn-default btn-xs" href="{{ path('category_show', { 'id': category.id }) }}">view category</a>
+                        {#<a class="btn btn-success btn-xs"  href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>#}
+                        {#<a class="btn btn-danger btn-xs" href="{{ path('category_delete', { 'id': category.id }) }}">Delete</a>#}
                     </ul>
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {#<ul>#}
+        {#<a class="btn btn-default btn-lg" href="{{ path('category_new') }}">Add category</a>#}
+    {#</ul>#}
     </div>
 </div>
-<footer>
 
-</footer>
 {% endblock %}
