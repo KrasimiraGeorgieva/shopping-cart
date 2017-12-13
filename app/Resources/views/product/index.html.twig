@@ -5,47 +5,65 @@
     <div class="well">
     <h1>Products list</h1>
 
-    <table>
-        <thead>
-            <tr >
-                <th style="padding-right: 5px">No</th>
-                <th style="padding-right: 40px">Name</th>
-                <th style="padding-right: 250px">Description</th>
-                <th style="padding-right: 20px">Price</th>
-                <th style="padding-right: 20px">Image</th>
-                <th style="padding-right: 20px">Quantity</th>
-                {#<th style="padding-right: 10px">{{ category[name] }}</th>#}
-                <th style="padding-right: 20px"></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for index,product in products %}
-            <tr>
-                {#<td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>#}
-                <td>{{ index + 1 }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.image }}</td>
-                <td>{{ product.quantity }}</td>
-                {#<td>{{ product.categoryId }}</td>#}
-                <td>
-                    <ul>
-                        <a class="btn btn-default btn-xs" href="{{ path('product_show', { 'id': product.id }) }}">show</a>
-
-                        <a class="btn btn-success btn-xs" href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
-
-                        <a class="btn btn-danger btn-xs" href="{{ path('product_delete', { 'id': product.id }) }}">Delete</a>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <a class="btn btn-default btn-lg" href="{{ path('product_new') }}">Add product</a>
-    </ul>
     </div>
-</div>
+    <hr>
+        {% for product in products %}
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></h4>
+                    </div>
+                    <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+                    <div class="panel-footer" >Price: {{ product.price }}</div>
+                    <div class="panel-footer">Description: {{ product.description }}</div>
+                    <div class="panel-footer">Quantity: {{ product.quantity }}</div>
+                    <div class="panel-footer">Category: {{ product.category.name }}</div>
+                </div>
+            </div>
+        {% endfor %}
+
+    {#<table>#}
+        {#<thead>#}
+            {#<tr >#}
+                {#<th style="padding-right: 5px">No</th>#}
+                {#<th style="padding-right: 40px">Name</th>#}
+                {#<th style="padding-right: 250px">Description</th>#}
+                {#<th style="padding-right: 20px">Price</th>#}
+                {#<th style="padding-right: 20px">Image</th>#}
+                {#<th style="padding-right: 20px">Quantity</th>#}
+                {#<th style="padding-right: 10px">{{ category[name] }}</th>#}
+                {#<th style="padding-right: 20px"></th>#}
+            {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for index,product in products %}#}
+            {#<tr>#}
+                {#<td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>#}
+                {#<td>{{ index + 1 }}</td>#}
+                {#<td>{{ product.name }}</td>#}
+                {#<td>{{ product.description }}</td>#}
+                {#<td>{{ product.price }}</td>#}
+                {#<td>{{ product.image }}</td>#}
+                {#<td>{{ product.quantity }}</td>#}
+                {#<td>{{ product.categoryId }}</td>#}
+                {#<td>#}
+                    {#<ul>#}
+                        {#<a class="btn btn-default btn-xs" href="{{ path('product_show', { 'id': product.id }) }}">show</a>#}
+
+                        {#<a class="btn btn-success btn-xs" href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>#}
+
+                        {#<a class="btn btn-danger btn-xs" href="{{ path('product_delete', { 'id': product.id }) }}">Delete</a>#}
+                    {#</ul>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
+
+    {#<ul>#}
+        {#<a class="btn btn-default btn-lg" href="{{ path('product_new') }}">Add product</a>#}
+    {#</ul>#}
+
+    </div>
+
 {% endblock %}
