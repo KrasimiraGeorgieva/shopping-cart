@@ -1,0 +1,51 @@
+{% extends '../base.html.twig' %}
+
+{% block body %}
+
+    <div class="col-sm-8">
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Categories</h1>
+                    {#<table>#}
+                        {#<thead>#}
+                        {#<tr>#}
+                            {#<th style="padding-right: 10px">No</th>#}
+                            {#<th style="padding-right: 70px">Name</th>#}
+                            {#<th style="padding-right: 70px"> </th>#}
+                        {#</tr>#}
+                        {#</thead>#}
+                        {#<tbody>#}
+                        {#{% for index,category in categories %}#}
+                            {#<tr>#}
+                                {#<td>{{ index + 1 }}</td>#}
+                                {#<td>{{ category.name }}</td>#}
+                                {#<td>#}
+                                    {#<ul>#}
+                                        {#<a class="btn btn-default btn-xs" href="{{ path('category_show', { 'id': category.id }) }}">show</a>#}
+                                        {#<a class="btn btn-success btn-xs"  href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>#}
+                                        {#<a class="btn btn-danger btn-xs" href="{{ path('category_delete', { 'id': category.id }) }}">Delete</a>#}
+                                    {#</ul>#}
+                                {#</td>#}
+                            {#</tr>#}
+                        {#{% endfor %}#}
+                        {#</tbody>#}
+                    {#</table>#}
+                </div>
+            </div>
+
+            {#<div class="row">#}
+            {#<div class="col-sm-6">#}
+            {#<div class="pull-right" >#}
+            {#<ul>#}
+                {#<a class="btn btn-default btn-lg" href="{{ path('category_new') }}">Add category</a>#}
+            {#</ul>#}
+            {#</div>#}
+            {#</div>#}
+            {#</div>#}
+        </div>
+    </div>
+    <footer>
+
+    </footer>
+{% endblock %}
