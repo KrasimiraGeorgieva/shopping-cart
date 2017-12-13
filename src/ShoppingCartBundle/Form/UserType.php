@@ -19,7 +19,10 @@ class UserType extends AbstractType
             ->add("email", EmailType::class)
             ->add("fullName", TextType::class)
             ->add("password", PasswordType::class)
-            ->add("confirm", PasswordType::class);
+            ->add("confirm", PasswordType::class)
+          ->add("newPassword", PasswordType::class)
+        ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

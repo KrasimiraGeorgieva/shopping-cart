@@ -103,7 +103,7 @@ class Product
      *
      * @return Product
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
 
@@ -127,7 +127,7 @@ class Product
      *
      * @return Product
      */
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -151,7 +151,7 @@ class Product
      *
      * @return Product
      */
-    public function setPrice(float $price)
+    public function setPrice($price)
     {
         $this->price = $price;
 
@@ -199,7 +199,7 @@ class Product
      *
      * @return Product
      */
-    public function setQuantity(int $quantity)
+    public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
 

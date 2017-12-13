@@ -58,7 +58,7 @@ class Category
      *
      * @return Category
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
 
@@ -77,7 +77,7 @@ class Category
 
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     /**
