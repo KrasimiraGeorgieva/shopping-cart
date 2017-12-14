@@ -4,6 +4,8 @@ namespace ShoppingCartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -49,10 +51,20 @@ class User implements UserInterface
      */
     private $confirm;
 
+    /**
+     * @var string
+     */
     private $newPassword;
 
     /**
-     * @var ArrayCollection
+     * @var float
+     *
+     * @ORM\Column(name="wallet", type="decimal", precision = 10, scale = 2, nullable=true)
+     */
+    private $wallet;
+
+    /**
+     * @var ArrayCollection|Role[]
      *
      * @ORM\ManyToMany(targetEntity="ShoppingCartBundle\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(
@@ -70,11 +82,20 @@ class User implements UserInterface
     private $products;
 
     /**
-     * @var float
+     * One User have Many CartItems.
      *
-     * @ORM\Column(name="wallet", type="decimal", precision = 10, scale = 2, nullable=true)
+     * @var ArrayCollection|CartItem[]
+     *
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\CartItem", mappedBy="user")
      */
-    private $wallet;
+    private $cartItems;
+
+    /**
+     * @var ArrayCollection|Review[]
+     *
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="client")
+     */
+    private $reviews;
 
 
     /**
@@ -84,6 +105,8 @@ class User implements UserInterface
     {
         $this->products = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
         $this->setWallet(255.66);
     }
 
@@ -252,6 +275,38 @@ class User implements UserInterface
 //    {
 //        $this->products = $products;
 //    }
+
+    /**
+     * @return ArrayCollection|CartItem[]
+     */
+    public function getCartItems()
+    {
+        return $this->cartItems;
+    }
+
+    /**
+     * @param CartItem $cartItems
+     */
+    public function setCartItems($cartItems)
+    {
+        $this->cartItems = $cartItems;
+    }
+
+    /**
+     * @return ArrayCollection|Review[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param ArrayCollection|Review[] $reviews
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
+    }
 
     /**
      * @param Product $product
