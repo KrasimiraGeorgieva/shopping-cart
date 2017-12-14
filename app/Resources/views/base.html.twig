@@ -22,10 +22,13 @@
     {% block header %}
         <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="{{ path('homepage') }}">Home</a></li>
-            <li role="presentation"><a href="{{ path('category_index') }}">Categories</a></li>
-            <li role="presentation"><a href="{{ path('product_index') }}">Products</a></li>
+            <li role="presentation"><a href="{{ path('category_index') }}">All Categories</a></li>
+            <li role="presentation"><a href="{{ path('product_index') }}">All Products</a></li>
             <li role="presentation"><a href="#">Deals</a></li>
+            <li role="presentation"><a href="{{ path('cartItem_index') }}">Cart</a></li>
+
         </ul>
+
         <header>
             <div class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -75,7 +78,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="{{ path('cartItem_index') }}">
                                         CART
                                     </a>
                                 </li>

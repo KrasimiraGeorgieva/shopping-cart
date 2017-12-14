@@ -19,7 +19,7 @@
         {% for index,category in categories %}
             <tr>
                 <td><h5>{{ index + 1 }}</h5></td>
-                <td><h5>{{ category.name }}</a></h5></td>
+                <td><h5>{{ category.name }}</h5></td>
                 <td>
                     <ul>
                         <a class="btn btn-default btn-xs" href="{{ path('category_show', { 'id': category.id }) }}">view category</a>
