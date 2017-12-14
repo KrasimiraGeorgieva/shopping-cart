@@ -1,51 +1,75 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{#{% block header %}{% endblock %}#}
+{#{% block footer %}{% endblock %}#}
 
 {% block body %}
 
-    <div class="col-sm-8">
-        <div class="well">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h1>Categories</h1>
-                    {#<table>#}
-                        {#<thead>#}
-                        {#<tr>#}
-                            {#<th style="padding-right: 10px">No</th>#}
-                            {#<th style="padding-right: 70px">Name</th>#}
-                            {#<th style="padding-right: 70px"> </th>#}
-                        {#</tr>#}
-                        {#</thead>#}
-                        {#<tbody>#}
-                        {#{% for index,category in categories %}#}
-                            {#<tr>#}
-                                {#<td>{{ index + 1 }}</td>#}
-                                {#<td>{{ category.name }}</td>#}
-                                {#<td>#}
-                                    {#<ul>#}
-                                        {#<a class="btn btn-default btn-xs" href="{{ path('category_show', { 'id': category.id }) }}">show</a>#}
-                                        {#<a class="btn btn-success btn-xs"  href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>#}
-                                        {#<a class="btn btn-danger btn-xs" href="{{ path('category_delete', { 'id': category.id }) }}">Delete</a>#}
-                                    {#</ul>#}
-                                {#</td>#}
-                            {#</tr>#}
-                        {#{% endfor %}#}
-                        {#</tbody>#}
-                    {#</table>#}
-                </div>
-            </div>
+<hr>
+<h1>Category</h1>
+<a type="submit" class="btn btn-primary" href="{{ path('category_new') }}">Add</a>
+<hr>
+<table  class="table table-striped">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for index,category in categories %}
+        <tr>
+        <td>{{ index + 1 }}</td>
+        <td>{{ category.name }}</td>
+        <td>
+            <ul>
+                <a class="btn btn-default" href="{{ path('category_show', { 'id':category.id }) }}">View</a>
+                <a class="btn btn-success"  href="{{ path('category_edit', { 'id':category.id }) }}">Edit</a>
+                <a class="btn btn-danger" href="{{ path('category_delete', { 'id':category.id }) }}">Delete</a>
+            </ul>
+        </td>
+            {% endfor %}
+    </tbody>
+</table>
+<hr>
 
-            {#<div class="row">#}
-            {#<div class="col-sm-6">#}
-            {#<div class="pull-right" >#}
-            {#<ul>#}
-                {#<a class="btn btn-default btn-lg" href="{{ path('category_new') }}">Add category</a>#}
-            {#</ul>#}
-            {#</div>#}
-            {#</div>#}
-            {#</div>#}
-        </div>
-    </div>
-    <footer>
+<hr>
+<h1>Products</h1>
+<a type="submit" class="btn btn-primary" href="{{ path('product_new') }}">Add</a>
+<hr>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Category Name</th>
+        <th>In Stock/Out of Stock</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for index,product in products %}
+        <tr>
+            <td>{{ index+1 }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.image }}</td>
+            <td>{{ product.category.name}}</td>
+            <td>{{ product.stock }}</td>
+            <td><a class="btn btn-default" href="{{ path('product_show', {'id':product.id}) }}">View</a></td>
+            <td><a class="btn btn-success" href="{{ path("product_edit", {'id':product.id}) }}">Edit</a></td>
+            <td><a class="btn btn-danger" href="{{ path("product_delete", {'id':product.id}) }}">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    </footer>
 {% endblock %}

@@ -2,8 +2,6 @@
 
 namespace ShoppingCartBundle\Controller;
 
-
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,7 +14,17 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        // TODO
-        return $this->redirectToRoute('category_index');
+        $em = $this->getDoctrine()->getManager();
+
+        $products = $em->getRepository('ShoppingCartBundle:Product')->findAll();
+
+        $categories = $em->getRepository('ShoppingCartBundle:Category')->findAll();
+
+        return $this->render('admin/panel.html.twig',
+            [
+                'products' => $products,
+                'categories' => $categories
+            ]
+        );
     }
 }
