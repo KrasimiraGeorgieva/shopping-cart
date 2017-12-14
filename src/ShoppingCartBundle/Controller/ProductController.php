@@ -27,7 +27,7 @@ class ProductController extends Controller
     {
        $em = $this->getDoctrine()->getRepository(Product::class);
 
-        $products = $em->findByQuantity();
+        $products = $em->findAll();
 
             return $this->render('product/index.html.twig', ['products' => $products,]);
 
@@ -48,6 +48,7 @@ class ProductController extends Controller
         $product = new Product();
         $form = $this->createForm('ShoppingCartBundle\Form\ProductType', $product);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $product->setClient($this->getUser());
@@ -101,7 +102,7 @@ class ProductController extends Controller
     public function editAction(Request $request, $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-
+//dump($product);
         if ($product === null){
             return $this->redirectToRoute("product_index");
         }
@@ -113,7 +114,7 @@ class ProductController extends Controller
 
         $editForm = $this->createForm(ProductType::class, $product);
         $editForm->handleRequest($request);
-
+//dump($editForm); die();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
@@ -166,7 +167,7 @@ class ProductController extends Controller
             $em->remove($product);
             $em->flush();
 
-            $this->addFlash("info", "Product " . $product->getName() . " was successfully deleted.");
+            $this->addFlash("delete", "Product " . $product->getName() . " was successfully deleted.");
 
             return $this->redirectToRoute('product_index');
         }
@@ -177,5 +178,14 @@ class ProductController extends Controller
                 'delete_form' => $form->createView()
             ]
         );
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function testAction()
+    {
+        $repo = $this->getDoctrine()->getRepository(Product::class);
+        //$result = $repo->
     }
 }

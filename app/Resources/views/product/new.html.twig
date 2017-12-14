@@ -50,6 +50,13 @@
                     </div>
                 </div>
 
+                <fieldset>
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>
+                    <input type="checkbox" class="form-control" id="product_stock" placeholder="In Stock" name="product[stock]" value="{{ product.stock }}" >
+                    </div>
+                </fieldset>
+
                 {{ form_row(form._token) }}
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-4">

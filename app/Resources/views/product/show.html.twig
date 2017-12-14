@@ -39,12 +39,19 @@
                         </div>
                     </div>
 
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>
+                        <input type="checkbox" class="form-control" id="product_stock"  name="product[stock]" value="{{ product.stock }}" disabled>
+                        </div>
+                    </fieldset>
+
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
 
                         {% if app.getUser() and (app.getUser().isClient(product) or app.getUser().isAdmin() or app.getUser().isEditor()) %}
 
-                            <a type="submit" class="btn btn-primary" href="{{ path('product_new') }}">Add</a>
+
                         <a type="submit" class="btn btn-success" href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
                         <a class="btn btn-danger" href="{{ path('product_delete', {'id': product.id }) }}">Delete</a>
 

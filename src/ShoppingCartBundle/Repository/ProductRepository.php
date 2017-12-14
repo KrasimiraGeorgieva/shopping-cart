@@ -28,5 +28,22 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy("product.price", "ASC")
             ->getQuery()
             ->getResult();
+
+    }
+    public function test()
+    {
+        $db = $this->getEntityManager()->getConnection();
+
+        $stm = $db->query('SELECT id, name, category');
+        $stm->execute();
+        // vrashta vsichki
+        //return $stm->fetchAll(\PDO::FETCH_CLASS);
+
+        // vrashtared po red
+//        while($row = $stm->fetch()){
+//            var_dump($row);
+       // }
+
+
     }
 }

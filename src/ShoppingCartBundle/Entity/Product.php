@@ -2,7 +2,9 @@
 
 namespace ShoppingCartBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -25,6 +27,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="Please enter a product name")
      */
     private $name;
 
@@ -32,6 +35,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank(message="Please enter a description")
      */
     private $description;
 
@@ -39,6 +43,13 @@ class Product
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
+     * @Assert\NotBlank(message="Please enter a price")
+     * @Assert\Range(
+     *     max="1000000",
+     *     min="1.00",
+     *     maxMessage="The product must not be more expensive than 1000000 dollars",
+     *     minMessage="The product should cost at least 1.00 currency"
+     * )
      */
     private $price;
 
@@ -52,7 +63,14 @@ class Product
     /**
      * @var int
      *
-     * @ORM\Column(name="quantity", type="integer")
+     * @ORM\Column(name="stock", type="integer", nullable=false)
+     */
+    private $stock;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity", type="integer", options={"default"=0})
      */
     private $quantity;
 
@@ -84,7 +102,31 @@ class Product
      */
     private $client;
 
+    /**
+     * One Product(item) have Many CartItems.
+     *
+     * @var ArrayCollection|Product[]
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\CartItem", mappedBy="item")
+     *
+     */
+    private $cartItems;
 
+    /**
+     * One Product has Many Reviews.
+     *
+     * @var Review[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="product")
+     */
+    private $reviews;
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        $this->cartItems = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -193,6 +235,25 @@ class Product
     }
 
     /**
+     * @return bool
+     */
+    public function getStock(): ?bool
+    {
+        return $this->stock;
+    }
+
+    /**
+     * @param bool $stock
+     * @return Product
+     */
+    public function setStock(bool $stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
      * Set quantity
      *
      * @param integer $quantity
@@ -269,7 +330,7 @@ class Product
      *
      * @return Product
      */
-    public function setClientId(int $clientId):Product
+    public function setClientId(int $clientId)
     {
         $this->clientId = $clientId;
 
@@ -293,6 +354,44 @@ class Product
     public function setClient(User $client = null)
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|CartItem[]
+     */
+    public function getCartItems()
+    {
+        return $this->cartItems;
+    }
+
+    /**
+     * @param CartItem $cartItems
+     * @return Product
+     */
+    public function setCartItems(CartItem $cartItems)
+    {
+        $this->cartItems = $cartItems;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Review[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param ArrayCollection|Review[] $reviews
+     * @return Product
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
 
         return $this;
     }
