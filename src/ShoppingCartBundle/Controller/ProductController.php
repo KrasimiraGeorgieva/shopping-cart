@@ -114,9 +114,12 @@ class ProductController extends Controller
 
         $editForm = $this->createForm(ProductType::class, $product);
         $editForm->handleRequest($request);
-//dump($editForm); die();
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
 
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($product->getStock() === null){
+                $product->setStock('true');
+            }
+           // dump($editForm); die();
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
