@@ -24,8 +24,8 @@
             <li role="presentation" class="active"><a href="{{ path('homepage') }}">Home</a></li>
             <li role="presentation"><a href="{{ path('category_index') }}">All Categories</a></li>
             <li role="presentation"><a href="{{ path('product_index') }}">All Products</a></li>
-            <li role="presentation"><a href="#">Deals</a></li>
-            <li role="presentation"><a href="{{ path('cartItem_index') }}">Cart</a></li>
+            {#<li role="presentation"><a href="#">Deals</a></li>#}
+            {#<li role="presentation"><a href="{{ path('cartitem_show') }}">Cart</a></li>#}
 
         </ul>
 
@@ -66,6 +66,11 @@
                                         Logout
                                     </a>
                                 </li>
+                                <li>
+                                    {#<a href="{{ path('cartitem_show') }}">#}
+                                        CART
+                                    {#</a>#}
+                                </li>
                             {% else %}
                                 <li>
                                     <a href="{{ path('user_register') }}">
@@ -78,7 +83,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('cartItem_index') }}">
+                                    <a href="{{ path('security_login') }}" >
                                         CART
                                     </a>
                                 </li>
@@ -87,6 +92,7 @@
                     </div>
                 </div>
             </div>
+
 
             {% for label, messages in app.flashes %}
                 {% for message in messages %}

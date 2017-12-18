@@ -57,8 +57,10 @@
 
                     <fieldset>
                         <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>
-                        <input type="checkbox" class="form-control" id="product_stock" placeholder="In Stock" name="product[stock]" value="{{ product.stock }}" >
+                            <label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>
+                            <div class="col-sm-4 ">
+                                {{ form_widget(edit_form.stock, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
                         </div>
                     </fieldset>
 

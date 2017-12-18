@@ -1,70 +1,81 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container body-content span=8 offset=2">
-    <div class="well">
-        <form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">
-            <fieldset>
-                <div class="col-sm-4">
-                    <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                    <div class="panel-footer"><h1 >{{ product.name }}</h1></div>
-                </div>
-
-                <div class="col-sm-8">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_description">Description</label>
-                        <div class="col-sm-4 ">
-                            <input type="textarea" class="form-control" id="product_description" placeholder="Description" name="product[description]" value="{{ product.description }}" disabled>
-                        </div>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">
+                <fieldset>
+                    <div>
+                        <a href="{{ path('cartitem_new')}}">Add to cart</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+                        <div class="panel-footer"><h1 >{{ product.name }}</h1></div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_price">Price</label>
-                        <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="product_price" placeholder="Price" name="product[price]" value="{{ product.price }}" disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_quantity">Quantity</label>
-                        <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="product_quantity" placeholder="Quantity" name="product[quantity]" value="{{ product.quantity }}" disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_category">Category</label>
-                        <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="product_category" placeholder="Category" name="product[category]" value="{{ product.category }}" disabled>
-                        </div>
-                    </div>
-
-                    <fieldset>
+                    <div class="col-sm-8">
                         <div class="form-group">
-                        <label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>
-                        <input type="checkbox" class="form-control" id="product_stock"  name="product[stock]" value="{{ product.stock }}" disabled>
+                            <label class="col-sm-4 control-label" for="product_description">Description</label>
+                            <div class="col-sm-4 ">
+                                <input type="textarea" class="form-control" id="product_description" placeholder="Description" name="product[description]" value="{{ product.description }}" disabled>
+                            </div>
                         </div>
-                    </fieldset>
 
-                    <div class="form-group">
-                        <div class="col-sm-8 col-sm-offset-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="product_price">Price</label>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" id="product_price" placeholder="Price" name="product[price]" value="{{ product.price }}" disabled>
+                            </div>
+                        </div>
 
-                        {% if app.getUser() and (app.getUser().isClient(product) or app.getUser().isAdmin() or app.getUser().isEditor()) %}
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="product_quantity">Quantity</label>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" id="product_quantity" placeholder="Quantity" name="product[quantity]" value="{{ product.quantity }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="product_category">Category</label>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" id="product_category" placeholder="Category" name="product[category]" value="{{ product.category }}" disabled>
+                            </div>
+                        </div>
 
 
-                        <a type="submit" class="btn btn-success" href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
-                        <a class="btn btn-danger" href="{{ path('product_delete', {'id': product.id }) }}">Delete</a>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="product_stock">Stock</label>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control"  value="{% if product.stock == 1 %}In Stock{% else
+                                %}Out of Stock{% endif %}" disabled>
+                            </div>
+                        </div>
+                        {#<fieldset>#}
+                        {#<div class="form-group">#}
+                        {#<label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>#}
+                        {#<input type="checkbox" class="form-control" id="product_stock"  name="product[stock]" value="{{ product.stock }}" disabled>#}
+                        {#</div>#}
+                        {#</fieldset>#}
 
-                        {% endif %}
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-4">
 
-                        <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
+                                {% if app.getUser() and (app.getUser().isClient(product) or app.getUser().isAdmin() or app.getUser().isEditor()) %}
+
+
+                                    <a type="submit" class="btn btn-success" href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
+                                    <a class="btn btn-danger" href="{{ path('product_delete', {'id': product.id }) }}">Delete</a>
+
+                                {% endif %}
+
+                                <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </fieldset>
-        </form>
+                </fieldset>
+            </form>
+        </div>
     </div>
-</div>
 
 {#<div class="col-sm-6">#}
     {#<div class="well">#}

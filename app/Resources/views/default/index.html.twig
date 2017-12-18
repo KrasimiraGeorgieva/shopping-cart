@@ -2,11 +2,17 @@
 
 {% block body_id 'homepage' %}
 
-{% block header %}{% endblock %}
+{% block header %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+    {% endblock %}
+{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block body %}
 <head>
+
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -52,11 +58,9 @@
                     <li><a href="{{ path('product_index') }}">All Products</a></li>
 
                     {#<li><a href="#">Deals</a></li>#}
-                    {#<li><a href="#">Stores</a></li>#}
                     {#<li><a href="#">Contact</a></li>#}
 
                 </ul>
-
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if app.getUser() and app.getUser().isAdmin() %}
@@ -74,9 +78,11 @@
                     </li>
                     {% endif %}
                     <li><a href="{{ path('security_login') }}"><span class="glyphicon glyphicon-user"></span> Login</a></li>
-
-                    <li><a href="{{ path('cartItem_index') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-
+                    {% if app.user %}
+                    {#<li><a href="{{ path('cartitem_show') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>#}
+                    {% else %}
+                    <li><a href="{{ path('security_login') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -126,30 +132,30 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-sm-4">
-                        <div class="panel panel-danger">
-                            <div class="panel-heading">NEW YEAR DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer" >Price: </div>
-                            <div class="panel-footer">Description: </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="panel panel-success">
-                            <div class="panel-heading">WEEKEND DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer" >Price: </div>
-                            <div class="panel-footer">Description: </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">MONTH DEAL</div>
-                            <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                            <div class="panel-footer" >Price: </div>
-                            <div class="panel-footer">Description: </div>
-                        </div>
-                    </div>
+                    {#<div class="col-sm-4">#}
+                        {#<div class="panel panel-danger">#}
+                            {#<div class="panel-heading">NEW YEAR DEAL</div>#}
+                            {#<div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>#}
+                            {#<div class="panel-footer" >Price: </div>#}
+                            {#<div class="panel-footer">Description: </div>#}
+                        {#</div>#}
+                    {#</div>#}
+                    {#<div class="col-sm-4">#}
+                        {#<div class="panel panel-success">#}
+                            {#<div class="panel-heading">WEEKEND DEAL</div>#}
+                            {#<div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>#}
+                            {#<div class="panel-footer" >Price: </div>#}
+                            {#<div class="panel-footer">Description: </div>#}
+                        {#</div>#}
+                    {#</div>#}
+                    {#<div class="col-sm-4">#}
+                        {#<div class="panel panel-info">#}
+                            {#<div class="panel-heading">MONTH DEAL</div>#}
+                            {#<div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>#}
+                            {#<div class="panel-footer" >Price: </div>#}
+                            {#<div class="panel-footer">Description: </div>#}
+                        {#</div>#}
+                    {#</div>#}
 
                     {% for product in products %}
                         <div class="col-sm-4">
@@ -159,7 +165,7 @@
                             </div>
                                 <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
                                 <div class="panel-footer" >Price: {{ product.price }}</div>
-
+                                <div class="panel-footer">Available: {{ product.quantity }} items</div>
                                 <div class="panel-footer" >
                                     {% if ('stock' == 0) %}
                                         <div class="panel-footer" style="color: #3be6c4"><h3>In Stock</h3></div>

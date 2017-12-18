@@ -8,6 +8,7 @@ use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,11 +26,11 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-       $em = $this->getDoctrine()->getRepository(Product::class);
+        $em = $this->getDoctrine()->getRepository(Product::class);
 
         $products = $em->findAll();
 
-            return $this->render('product/index.html.twig', ['products' => $products,]);
+        return $this->render('product/index.html.twig', ['products' => $products,]);
 
     }
 
@@ -51,7 +52,18 @@ class ProductController extends Controller
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $file */
+            $file = $product->getImage();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move(
+                $this->getParameter('image_directory'),
+                $fileName
+            );
+
+            $product->setImage($fileName);
             $product->setClient($this->getUser());
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -65,6 +77,16 @@ class ProductController extends Controller
             'product' => $product,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/new", name="product_new_image")
+     */
+    public function showImage()
+    {
+        $image = $this->getDoctrine()->getRepository('ShoppingCartBundle:Product')->find(1);
+
+        return $this->render('product/new.html.twig', ['product' => $image]);
     }
 
     /**
@@ -85,6 +107,7 @@ class ProductController extends Controller
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
+
         ]);
     }
 
@@ -102,7 +125,7 @@ class ProductController extends Controller
     public function editAction(Request $request, $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-//dump($product);
+
         if ($product === null){
             return $this->redirectToRoute("product_index");
         }
@@ -116,10 +139,6 @@ class ProductController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            if ($product->getStock() === null){
-                $product->setStock('true');
-            }
-           // dump($editForm); die();
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -131,8 +150,8 @@ class ProductController extends Controller
 
         return $this->render('product/edit.html.twig',
             [
-            'product' => $product,
-            'edit_form' => $editForm->createView(),
+                'product' => $product,
+                'edit_form' => $editForm->createView(),
             ]
         );
     }
@@ -142,7 +161,7 @@ class ProductController extends Controller
      *
      * @Route("/{id}/delete", name="product_delete")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
+     * @Method("GET")
      *
      * @param Request $request
      * @param int $id
@@ -159,36 +178,49 @@ class ProductController extends Controller
 
         $currentUser = $this->getUser();
         if(!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()){
+
             return $this->redirectToRoute("product_index");
-        }
-
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($product);
-            $em->flush();
-
-            $this->addFlash("delete", "Product " . $product->getName() . " was successfully deleted.");
-
-            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('product/delete.html.twig',
             [
-                'product' => $product,
-                'delete_form' => $form->createView()
+                'product' => $product
             ]
         );
     }
 
     /**
-     * @Route("/test", name="test")
+     * Confirm deletes a product entity.
+     *
+     * @Route("/{id}/delete/process", name="product_delete_process")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function testAction()
+    public function deleteProcessAction(Request $request, $id)
     {
-        $repo = $this->getDoctrine()->getRepository(Product::class);
-        //$result = $repo->
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if (null === $product){
+            return $this->redirectToRoute("product_index");
+        }
+
+        $currentUser = $this->getUser();
+        if(!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()){
+
+            return $this->redirectToRoute("product_index");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($product);
+        $em->flush();
+
+        $this->addFlash("delete", "Product " . $product->getName() . " was successfully deleted.");
+
+        return $this->redirectToRoute('product_index');
     }
 }

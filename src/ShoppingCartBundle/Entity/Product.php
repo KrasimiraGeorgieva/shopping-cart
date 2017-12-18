@@ -47,7 +47,7 @@ class Product
      * @Assert\Range(
      *     max="1000000",
      *     min="1.00",
-     *     maxMessage="The product must not be more expensive than 1000000 dollars",
+     *     maxMessage="The product must not be more expensive than 1000000 currency",
      *     minMessage="The product should cost at least 1.00 currency"
      * )
      */
@@ -57,6 +57,9 @@ class Product
      * @var string
      *
      * @ORM\Column(name="image", type="text", nullable=true)
+     * @Assert\NotBlank(message="Please, upload the product image as a JPG file.")
+     * @Assert\Image(mimeTypes={ "application/jpg" })
+     *
      */
     private $image;
 
@@ -66,6 +69,13 @@ class Product
      * @ORM\Column(name="stock", type="integer", nullable=false)
      */
     private $stock;
+
+//    /**
+//     * @var bool
+//     *
+//     * @ORM\Column(name="owner_of_product", type="boolean")
+//     */
+//    private $ownerOfProduct;
 
     /**
      * @var int
@@ -126,6 +136,7 @@ class Product
     {
         $this->cartItems = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->stock = 1;
     }
 
     /**
@@ -235,23 +246,43 @@ class Product
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function getStock(): ?bool
+    public function getStock(): int
     {
         return $this->stock;
     }
 
     /**
-     * @param bool $stock
+     * @param int $stock
      * @return Product
      */
-    public function setStock(bool $stock)
+    public function setStock(int $stock)
     {
         $this->stock = $stock;
 
         return $this;
     }
+
+//    /**
+//     * @return bool
+//     */
+//    public function getOwnerOfProduct(): bool
+//    {
+//        return $this->ownerOfProduct;
+//    }
+//
+//    /**
+//     * @param bool $ownerOfProduct
+//     *
+//     * @return Product
+//     */
+//    public function setOwnerOfProduct(bool $ownerOfProduct)
+//    {
+//        $this->ownerOfProduct = $ownerOfProduct;
+//
+//        return $this;
+//    }
 
     /**
      * Set quantity
