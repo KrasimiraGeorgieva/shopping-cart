@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="row">
+            <div class="error">
+                <p>{{ dump(flashMessage) }}</p>
+            </div>
+        </div>
+    {% endfor %}
     <div class="col-sm-6">
         <div class="well">
             <form class="form-horizontal" name="authenticate" action="{{ path('security_login') }}" method="post">
@@ -8,12 +15,12 @@
                     <legend>Login</legend>
                     <div class="form-group">
                         <div class="col-sm-12 ">
-                            <input type="email" class="form-control" id="user_email" placeholder="Email" name="_username">
+                            <input type="email" class="form-control" id="user_email" placeholder="Email" name="_username" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="password" class="form-control" id="password" placeholder="Password" name="_password">
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="_password" required>
                         </div>
                     </div>
 
