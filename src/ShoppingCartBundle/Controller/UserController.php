@@ -8,9 +8,11 @@ use ShoppingCartBundle\Entity\Role;
 use ShoppingCartBundle\Entity\User;
 use ShoppingCartBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class UserController extends Controller
 {
@@ -26,11 +28,14 @@ class UserController extends Controller
         $form->handleRequest($request);
 
       if ($form->isSubmitted()&& $form->isValid()) {
-
           if ($user->getPassword() != $user->getConfirm()){
-            $form->addError(new FormError("Password mismatch"));
+              $this->get('session')->getFlashBag()->set('error', "Password mismatch!");
+
+              $form = $this->createForm(UserType::class, $user);
+            //$form->addError(new FormError("Password mismatch"));
             return $this->render('user/register.html.twig', ['form' => $form->createView()]);
           }
+
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
@@ -43,7 +48,9 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('user_profile');
+            $this->addFlash("info", "Wellcome " . $user->getFullName());
+
+            return $this->redirectToRoute('homepage');
         }
         return $this->render('user/register.html.twig',['form' => $form->createView()]);
     }
@@ -52,7 +59,7 @@ class UserController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/profile", name="user_profile")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function profileAction(Request $request)
     {
@@ -66,7 +73,7 @@ class UserController extends Controller
         if ($form->isSubmitted()&& $form->isValid()) {
 
             if (($user->getPassword() != $user->getConfirm()) || ($user->getNewPassword() != $user->getConfirm())) {
-                $form->addError(new FormError("Password mismatch"));
+                //$form->addError(new FormError("Password mismatch"));
                 return $this->render('user/profile.html.twig', ['form' => $form->createView()]);
             }
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
@@ -81,4 +88,33 @@ class UserController extends Controller
         }
         return $this->render("user/profile.html.twig", ['user' => $user, 'form' => $form->createView()]);
     }
+
+    /**
+     * @Route("/{id}/edit", name="edit_profile")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     *
+     * @return RedirectResponse
+     */
+    public function editProfileAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+
+        $currentUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager()->getRepository(User::class)->find($currentUser);
+
+        $form = $this->createForm(UserType::class, $currentUser);
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+            //die();
+            return $this->redirectToRoute('homepage');
+        }
+
+
+
+        //$form->remove('password');
+        //$form->add('CurrentPassword', PasswordType::class, ['label' => 'Current password']);
+
+    }
+
 }

@@ -4,9 +4,8 @@ namespace ShoppingCartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+
 
 /**
  * User
@@ -14,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="ShoppingCartBundle\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var int
@@ -64,13 +63,20 @@ class User implements UserInterface
     private $wallet;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="ban", type="boolean")
+     */
+    private $ban;
+
+    /**
      * @var ArrayCollection|Role[]
      *
      * @ORM\ManyToMany(targetEntity="ShoppingCartBundle\Entity\Role", inversedBy="users")
-     * @ORM\JoinTable(
-     *     name="users_roles", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     * @ORM\JoinTable(name="users_roles",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
      *     )
-     *
      */
     private $roles;
 
@@ -97,6 +103,13 @@ class User implements UserInterface
      */
     private $reviews;
 
+    /**
+     * @var ArrayCollection|Item[]
+     *
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Item", mappedBy="customer")
+     */
+    private $items;
+
 
     /**
      * User constructor.
@@ -107,7 +120,9 @@ class User implements UserInterface
         $this->roles = new ArrayCollection();
         $this->cartItems = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->items = new ArrayCollection();
         $this->setWallet(255.66);
+        $this->ban = false;
     }
 
     /**
@@ -309,6 +324,22 @@ class User implements UserInterface
     }
 
     /**
+     * @return ArrayCollection|Item[]
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param ArrayCollection|Item[] $items
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+    }
+
+    /**
      * @param Product $product
      * @return bool
      */
@@ -331,6 +362,22 @@ class User implements UserInterface
     public function isAdmin()
     {
         return in_array("ROLE_ADMIN", $this->getRoles());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBan()
+    {
+        return $this->ban;
+    }
+
+    /**
+     * @param bool $ban
+     */
+    public function setBan(bool $ban)
+    {
+        $this->ban = $ban;
     }
 
     /**
@@ -384,5 +431,108 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * Checks whether the user's account has expired.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw an AccountExpiredException and prevent login.
+     *
+     * @return bool true if the user's account is non expired, false otherwise
+     *
+     * @see AccountExpiredException
+     */
+    public function isAccountNonExpired()
+    {
+        // TODO: Implement isAccountNonExpired() method.
+        return true;
+    }
+
+    /**
+     * Checks whether the user is locked.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a LockedException and prevent login.
+     *
+     * @return bool true if the user is not locked, false otherwise
+     *
+     * @see LockedException
+     */
+    public function isAccountNonLocked()
+    {
+        // TODO: Implement isAccountNonLocked() method.
+        return true;
+    }
+
+    /**
+     * Checks whether the user's credentials (password) has expired.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a CredentialsExpiredException and prevent login.
+     *
+     * @return bool true if the user's credentials are non expired, false otherwise
+     *
+     * @see CredentialsExpiredException
+     */
+    public function isCredentialsNonExpired()
+    {
+        // TODO: Implement isCredentialsNonExpired() method.
+        return true;
+    }
+
+    /**
+     * Checks whether the user is enabled.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a DisabledException and prevent login.
+     *
+     * @return bool true if the user is enabled, false otherwise
+     *
+     * @see DisabledException
+     */
+    public function isEnabled()
+    {
+        if ($this->isBan() == true) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->getId(),
+                $this->getFullName(),
+                $this->getEmail(),
+                $this->getPassword()
+            ]
+        );
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->fullName,
+            $this->email,
+            $this->password
+            ) = unserialize($serialized);
     }
 }

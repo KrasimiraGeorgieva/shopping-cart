@@ -13,6 +13,14 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
+        $helper = $this->get('security.authentication_utils');
+
+        if (null !== $helper->getLastAuthenticationError()) {
+            return $this->render('security/ban.html.twig', array(
+                'last_email' => $helper->getLastUsername(),
+                'error' => $helper->getLastAuthenticationError(),
+            ));
+        }
 
         return $this->render('security/login.html.twig');
     }
@@ -23,6 +31,7 @@ class SecurityController extends Controller
      */
     public function logoutAction()
     {
+        $this->addFlash('info', 'Come back again. :)');
         throw new \Exception('This should never be reached!');
     }
 }
