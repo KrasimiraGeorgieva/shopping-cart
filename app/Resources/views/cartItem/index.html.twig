@@ -1,28 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% block content %}
-    <div class="container">
-        <h1>Shopping cart items
-            {#<small class="small-head">There currently are {{ items|length }} item(s) in the basket</small>#}
-        </h1>
+    <h1>Cartitems list</h1>
 
-        <table class="table table-responsive table-striped">
-            <thead>
+    <table>
+        <thead>
             <tr>
-                <th>Name:</th>
-                <th>Price:</th>
+                <th>Id</th>
+                <th>Orderquantity</th>
+                <th>Totalprice</th>
+                <th>Createddate</th>
+                <th>Status</th>
+                <th>Contactname</th>
+                <th>Phonenumber</th>
+                <th>Actions</th>
             </tr>
-            </thead>
-            {#<tbody>#}
-            {#{% for item in items %}#}
-                {#<tr>#}
-                    {#<td>{{ item.name }}</td>#}
-                    {#<td>{{ item.price }} $</td>#}
-                {#</tr>#}
-            {#{% endfor %}#}
-            {#</tbody>#}
-        </table>
-    </div>
-    {% endblock %}
+        </thead>
+        <tbody>
+        {% for cartItem in cartItems %}
+            <tr>
+                <td><a href="{{ path('cartitem_show', { 'id': cartItem.id }) }}">{{ cartItem.id }}</a></td>
+                <td>{{ cartItem.orderQuantity }}</td>
+                <td>{{ cartItem.totalPrice }}</td>
+                <td>{% if cartItem.createdDate %}{{ cartItem.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ cartItem.status }}</td>
+                <td>{{ cartItem.contactName }}</td>
+                <td>{{ cartItem.phoneNumber }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('cartitem_show', { 'id': cartItem.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('cartitem_edit', { 'id': cartItem.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cartitem_new') }}">Create a new cartItem</a>
+        </li>
+    </ul>
 {% endblock %}

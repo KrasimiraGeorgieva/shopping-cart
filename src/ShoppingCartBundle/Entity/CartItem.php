@@ -4,9 +4,8 @@ namespace ShoppingCartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CartItem
@@ -33,7 +32,7 @@ class CartItem
     private $orderQuantity;
 
     /**
-     * @var string
+     * @var double
      *
      * @ORM\Column(name="totalPrice", type="decimal", precision=10, scale=2)
      */
@@ -42,9 +41,45 @@ class CartItem
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdDate", type="datetimetz")
+     * @ORM\Column(name="createdDate", type="datetime")
      */
     private $createdDate;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @Assert\Length(
+     * min = 2,
+     * max = 150,
+     * minMessage = "Your first name must be at least 2 characters long",
+     * maxMessage = "Your first name cannot be longer than 150 characters"
+     * )
+     *
+     * @ORM\Column(name="contact_name", type="string", length=150)
+     */
+    private $contactName;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your phone number must be at least 8 digits",
+     *      maxMessage = "Your phone number cannot be longer than 50 digits"
+     * )
+     *
+     * @ORM\Column(name="phone_number", type="string", length=50)
+     */
+    private $phoneNumber;
 
     /**
      *  Many CartItems have One User.
@@ -62,6 +97,17 @@ class CartItem
      */
     private $item;
 
+
+    /**
+     * CartItem constructor.
+     */
+    public function __construct()
+    {
+        $this->createdDate = new \DateTime('now');
+        $this->status = 0;
+        $this->item = new ArrayCollection();
+        $this->user = new ArrayCollection();
+    }
 
 
     /**
@@ -101,7 +147,7 @@ class CartItem
     /**
      * Set totalPrice
      *
-     * @param string $totalPrice
+     * @param double $totalPrice
      *
      * @return CartItem
      */
@@ -147,7 +193,67 @@ class CartItem
     }
 
     /**
-     * @return User
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     *
+     * @return CartItem
+     */
+    public function setStatus(int $status = 1)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactName()
+    {
+        return $this->contactName;
+    }
+
+    /**
+     * @param string $contactName
+     *
+     * @return CartItem
+     */
+    public function setContactName(string $contactName)
+    {
+        $this->contactName = $contactName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param string $phoneNumber
+     *
+     * @return CartItem
+     */
+    public function setPhoneNumber(string $phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|User[]
      */
     public function getUser()
     {
@@ -163,7 +269,7 @@ class CartItem
     }
 
     /**
-     * @return Product
+     * @return ArrayCollection|Item[]
      */
     public function getItem()
     {
