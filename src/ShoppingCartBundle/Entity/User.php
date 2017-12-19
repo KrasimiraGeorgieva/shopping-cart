@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
-
 /**
  * User
  *
@@ -87,28 +86,22 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $products;
 
+
     /**
-     * One User have Many CartItems.
+     * One User has Many Cart.
      *
-     * @var ArrayCollection|CartItem[]
+     * @var ArrayCollection|Cart[]
      *
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\CartItem", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Cart", mappedBy="user")
      */
-    private $cartItems;
+    private $carts;
 
     /**
      * @var ArrayCollection|Review[]
      *
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="user")
      */
     private $reviews;
-
-    /**
-     * @var ArrayCollection|Item[]
-     *
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Item", mappedBy="customer")
-     */
-    private $items;
 
 
     /**
@@ -118,9 +111,8 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->products = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->cartItems = new ArrayCollection();
+        $this->carts = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-        $this->items = new ArrayCollection();
         $this->setWallet(255.66);
         $this->ban = false;
     }
@@ -292,22 +284,6 @@ class User implements AdvancedUserInterface, \Serializable
 //    }
 
     /**
-     * @return ArrayCollection|CartItem[]
-     */
-    public function getCartItems()
-    {
-        return $this->cartItems;
-    }
-
-    /**
-     * @param CartItem $cartItems
-     */
-    public function setCartItems($cartItems)
-    {
-        $this->cartItems = $cartItems;
-    }
-
-    /**
      * @return ArrayCollection|Review[]
      */
     public function getReviews()
@@ -321,22 +297,6 @@ class User implements AdvancedUserInterface, \Serializable
     public function setReviews($reviews)
     {
         $this->reviews = $reviews;
-    }
-
-    /**
-     * @return ArrayCollection|Item[]
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
-     * @param ArrayCollection|Item[] $items
-     */
-    public function setItems($items)
-    {
-        $this->items = $items;
     }
 
     /**

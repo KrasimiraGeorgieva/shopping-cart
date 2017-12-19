@@ -8,7 +8,6 @@ use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -53,15 +52,16 @@ class ProductController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $file */
-            $file = $product->getImage();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move(
-                $this->getParameter('image_directory'),
-                $fileName
-            );
+//            /** @var UploadedFile $file */
+//            $file = $product->getImage();
+//            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+//            $file->move(
+//                $this->getParameter('image_directory'),
+//                $fileName
+//            );
+//
+//            $product->setImage($fileName);
 
-            $product->setImage($fileName);
             $product->setClient($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
@@ -79,15 +79,15 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/new", name="product_new_image")
-     */
-    public function showImage()
-    {
-        $image = $this->getDoctrine()->getRepository('ShoppingCartBundle:Product')->find(1);
-
-        return $this->render('product/new.html.twig', ['product' => $image]);
-    }
+//    /**
+//     * @Route("/new", name="product_new_image")
+//     */
+//    public function showImage()
+//    {
+//        $image = $this->getDoctrine()->getRepository('ShoppingCartBundle:Product')->find(1);
+//
+//        return $this->render('product/new.html.twig', ['product' => $image]);
+//    }
 
     /**
      * Finds and displays a product entity.
@@ -163,12 +163,11 @@ class ProductController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Method("GET")
      *
-     * @param Request $request
-     * @param int $id
+     * @param Product $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
@@ -196,12 +195,11 @@ class ProductController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      *
-     * @param Request $request
      * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteProcessAction(Request $request, $id)
+    public function deleteProcessAction($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
@@ -223,4 +221,21 @@ class ProductController extends Controller
 
         return $this->redirectToRoute('product_index');
     }
+
+//    /**
+//     * @Route("/{id}/add", name="product_add")
+//     *
+//     * @Method("GET", "POST")
+//     * @param Request $request
+//     * @param Product $id
+//     * @return void
+//     */
+//    public function addProduct(Request $request, Product $id)
+//    {
+//        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+//        $form = $this->createForm('ShoppingCartBundle\Form\ItemType', $product);
+//        $form->handleRequest($request);
+//
+//
+//    }
 }

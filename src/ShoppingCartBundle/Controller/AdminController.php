@@ -20,16 +20,10 @@ class AdminController extends Controller
 
         $categories = $em->getRepository('ShoppingCartBundle:Category')->findAll();
 
-        $items = $em->getRepository('ShoppingCartBundle:Item')->findAll();
-
-        $cartItems = $em->getRepository('ShoppingCartBundle:CartItem')->findAll();
-
         return $this->render('admin/panel.html.twig',
             [
                 'products' => $products,
                 'categories' => $categories,
-                'items' => $items,
-                'cartItems' => $cartItems
             ]
         );
     }

@@ -5,9 +5,9 @@
         <div class="well">
             <form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">
                 <fieldset>
-                    <div>
-                        <a href="{{ path('cartitem_new')}}">Add to cart</a>
-                    </div>
+                    {#<div>#}
+                        {#<a href="{{ path('') }}" >Add to cart</a>#}
+                    {#</div>#}
                     <div class="col-sm-4">
                         <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
                         <div class="panel-footer"><h1 >{{ product.name }}</h1></div>
@@ -17,7 +17,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_description">Description</label>
                             <div class="col-sm-4 ">
-                                <input type="textarea" class="form-control" id="product_description" placeholder="Description" name="product[description]" value="{{ product.description }}" disabled>
+                                <input type="text" class="form-control" id="product_description" placeholder="Description" name="product[description]" value="{{ product.description }}" disabled>
                             </div>
                         </div>
 

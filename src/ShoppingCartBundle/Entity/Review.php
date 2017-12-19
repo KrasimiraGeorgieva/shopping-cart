@@ -3,6 +3,7 @@
 namespace ShoppingCartBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Review
@@ -29,18 +30,20 @@ class Review
     private $comment;
 
     /**
-     * @var Product
+     * @var Product $product
      *
      * @ORM\ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="reviews")
+     * @JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
 
     /**
-     * @var User $client
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="ShoppingCartBundle\Entity\User", inversedBy="reviews")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $client;
+    private $user;
 
 
     /**
@@ -96,17 +99,17 @@ class Review
     /**
      * @return User
      */
-    public function getClient(): User
+    public function getUser(): User
     {
-        return $this->client;
+        return $this->user;
     }
 
     /**
-     * @param User $client
+     * @param User $user
      */
-    public function setClient(User $client)
+    public function setUser(User $user)
     {
-        $this->client = $client;
+        $this->user = $user;
     }
 }
 

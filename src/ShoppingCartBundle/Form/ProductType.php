@@ -29,7 +29,8 @@ class ProductType extends AbstractType
         $builder->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('price',NumberType::class, ['label' => 'Price'])
-            ->add('image', FileType::class, ['label' => 'Image (JPG file)'])
+            ->add('image', TextType::class)
+            //->add('image', FileType::class, ['label' => 'Image (JPG file)'])
             ->add('quantity', NumberType::class)
             ->add('category', EntityType::class,[
                 'class' => Category::class,
@@ -39,7 +40,8 @@ class ProductType extends AbstractType
                 'choices' => array(
                     'In Stock' => 1,
                     'Out of Stock' => 0
-                )));
+                )))
+            ->add('slug', TextType::class);
     }
 
     /**

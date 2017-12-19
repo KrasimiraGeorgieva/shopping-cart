@@ -1,9 +1,10 @@
 <?php
-
+declare (strict_types =1);
 namespace ShoppingCartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,7 +41,7 @@ class Product
     private $description;
 
     /**
-     * @var string
+     * @var double
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      * @Assert\NotBlank(message="Please enter a price")
@@ -112,14 +113,15 @@ class Product
      */
     private $client;
 
+
     /**
-     * One Product(item) have Many CartItems.
+     * One Product has Many OrderProducts.
      *
-     * @var ArrayCollection|Product[]
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\CartItem", mappedBy="item")
-     *
+     * @var OrderProducts[]|ArrayCollection
+     * @OneToMany(targetEntity="ShoppingCartBundle\Entity\OrderProducts", mappedBy="product")
      */
-    private $cartItems;
+    private $orderProducts;
+
 
     /**
      * One Product has Many Reviews.
@@ -130,12 +132,18 @@ class Product
     private $reviews;
 
     /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+    /**
      * Product constructor.
      */
     public function __construct()
     {
-        $this->cartItems = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
         $this->stock = 1;
     }
 
@@ -287,7 +295,7 @@ class Product
     /**
      * Set quantity
      *
-     * @param integer $quantity
+     * @param $quantity
      *
      * @return Product
      */
@@ -376,7 +384,6 @@ class Product
         return $this->client->getFullName();
     }
 
-
     /**
      * @param \ShoppingCartBundle\Entity\User $client
      *
@@ -385,25 +392,6 @@ class Product
     public function setClient(User $client = null)
     {
         $this->client = $client;
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection|CartItem[]
-     */
-    public function getCartItems()
-    {
-        return $this->cartItems;
-    }
-
-    /**
-     * @param CartItem $cartItems
-     * @return Product
-     */
-    public function setCartItems(CartItem $cartItems)
-    {
-        $this->cartItems = $cartItems;
 
         return $this;
     }
@@ -426,5 +414,38 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection|OrderProducts[]
+     */
+    public function getOrderProducts()
+    {
+        return $this->orderProducts;
+    }
+
+    /**
+     * @param ArrayCollection|OrderProducts[] $orderProducts
+     */
+    public function setOrderProducts($orderProducts)
+    {
+        $this->orderProducts = $orderProducts;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
+    }
+
 }
 
