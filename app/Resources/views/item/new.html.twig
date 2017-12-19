@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Item quantity</h1>
+
+    <div class="row">
+
+        <div class="col-sm-8">
+            {#<form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">#}
+            {#{{ form_start(form) }}#}
+            {#{{ form_widget(form) }}#}
+
+            {#{{ form_end(form) }}#}
+            {#</form>#}
+        </div>
+        <div class="col-sm-4">
+            {{ form_start(form) }}
+            {{ form_widget(form.orderQuantity, {'attr': {'class': 'form-control', 'placeholder': "Enter quantity number"} }) }}
+            <input type="submit"  class="form-control" style="background-color: #18bc9c"  value="Go to cart" />
+            {{ form_end(form) }}
+
+            <ul>
+                <li>
+                    <a href="{{ path('item_index') }}">Back to the list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+{% endblock %}
