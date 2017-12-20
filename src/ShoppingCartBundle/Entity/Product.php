@@ -131,11 +131,11 @@ class Product
      */
     private $reviews;
 
-    /**
-     * @var string
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    private $slug;
+//    /**
+//     * @var string
+//     * @ORM\Column(name="slug", type="string", length=255)
+//     */
+//    private $slug;
 
     /**
      * Product constructor.
@@ -430,22 +430,22 @@ class Product
     {
         $this->orderProducts = $orderProducts;
     }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug(string $slug)
-    {
-        $this->slug = $slug;
-    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getSlug(): string
+//    {
+//        return $this->slug;
+//    }
+//
+//    /**
+//     * @param string $slug
+//     */
+//    public function setSlug(string $slug)
+//    {
+//        $this->slug = $slug;
+//    }
 
 }
 

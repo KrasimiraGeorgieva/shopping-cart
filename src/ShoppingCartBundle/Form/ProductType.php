@@ -41,7 +41,8 @@ class ProductType extends AbstractType
                     'In Stock' => 1,
                     'Out of Stock' => 0
                 )))
-            ->add('slug', TextType::class);
+            //->add('slug', TextType::class);
+        ;
     }
 
     /**

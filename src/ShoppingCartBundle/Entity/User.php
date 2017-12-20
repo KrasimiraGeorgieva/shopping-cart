@@ -174,7 +174,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
         $this->email = $email;
 
@@ -198,7 +198,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setPassword(string $password)
+    public function setPassword($password)
     {
         $this->password = $password;
 

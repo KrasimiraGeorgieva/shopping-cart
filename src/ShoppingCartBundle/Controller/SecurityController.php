@@ -21,7 +21,6 @@ class SecurityController extends Controller
                 'error' => $helper->getLastAuthenticationError(),
             ));
         }
-
         return $this->render('security/login.html.twig');
     }
 

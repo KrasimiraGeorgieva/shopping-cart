@@ -5,13 +5,18 @@
         <div class="well">
             <form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">
                 <fieldset>
-                    {#<div>#}
-                        {#<a href="{{ path('') }}" >Add to cart</a>#}
-                    {#</div>#}
+
                     <div class="col-sm-4">
-                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"><br>
+                            <a href="{{ path('product_order', {id: product.id}) }}" class="btn btn-primary btn-sm"
+                               style="padding-left: 230px;">Add to cart</a>
+
+                        </div>
                         <div class="panel-footer"><h1 >{{ product.name }}</h1></div>
                     </div>
+                    {#<div>#}
+
+                    {#</div>#}
 
                     <div class="col-sm-8">
                         <div class="form-group">
@@ -50,6 +55,7 @@
                                 %}Out of Stock{% endif %}" disabled>
                             </div>
                         </div>
+
                         {#<fieldset>#}
                         {#<div class="form-group">#}
                         {#<label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>#}
@@ -69,6 +75,8 @@
                                 {% endif %}
 
                                 <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
+                                <a class="btn btn-primary" href="{{ path('product_order',{'id': product.id })
+                                }}">Add to cart</a>
                             </div>
                         </div>
                     </div>

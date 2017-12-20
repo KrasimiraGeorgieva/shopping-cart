@@ -6,8 +6,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use ShoppingCartBundle\Entity\Role;
 use ShoppingCartBundle\Entity\User;
+use ShoppingCartBundle\Form\UserEditType;
 use ShoppingCartBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +52,8 @@ class UserController extends Controller
 
             $this->addFlash("info", "Wellcome " . $user->getFullName());
 
-            return $this->redirectToRoute('homepage');
+
+          return $this->redirectToRoute('homepage');
         }
         return $this->render('user/register.html.twig',['form' => $form->createView()]);
     }
@@ -90,11 +93,14 @@ class UserController extends Controller
     }
 
     /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/{id}/edit", name="edit_profile")
+     *
+     *
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editProfileAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -102,19 +108,32 @@ class UserController extends Controller
         $currentUser = $this->getUser();
         $em = $this->getDoctrine()->getManager()->getRepository(User::class)->find($currentUser);
 
-        $form = $this->createForm(UserType::class, $currentUser);
+        $form = $this->createForm(UserEditType::class, $currentUser);
+        $form->remove('email');
+        $form->add('currentPassword', PasswordType::class, ['label' => 'Current password']);
         $form->handleRequest($request);
 
-        if($form->isValid()){
+        if($form->isSubmitted() && !$passwordEncoder->isPasswordValid($currentUser, $currentUser->getCurrentPassword())){
+            $form->get('currentPassword')->addError(new FormError('Password mismatch!'));
+        }
+
+        if($form->isSubmitted() && $form->isValid()){
             //die();
+
+            $newPassword = $passwordEncoder->encodePassword($currentUser,$currentUser->getNewPassword());
+            $currentUser->setPassword($newPassword);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($currentUser);
+            $em->flush();
+
             return $this->redirectToRoute('homepage');
         }
 
-
-
-        //$form->remove('password');
-        //$form->add('CurrentPassword', PasswordType::class, ['label' => 'Current password']);
-
+        return $this->render('user/profile.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
 }

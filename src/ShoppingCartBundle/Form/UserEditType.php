@@ -3,7 +3,10 @@
 namespace ShoppingCartBundle\Form;
 
 use ShoppingCartBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +16,11 @@ class UserEditType extends AbstractType
     {
         //$options['data']['username']
         $builder
-            ->add("password", PasswordType::class, ['action' => 'password'])
-            ->add("confirm", PasswordType::class, ['action' => 'confirm'])
-            ->add("newPassword", PasswordType::class, ['action' => 'newPassword']);
+            ->add('fullName', EntityType::class)
+            ->add('password', PasswordType::class, ['action' => 'password'])
+            ->add('confirm', PasswordType::class, ['action' => 'confirm'])
+            ->add('newPassword', PasswordType::class, ['action' => 'newPassword'])
+            ->add('wallet', NumberType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

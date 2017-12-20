@@ -3,7 +3,9 @@
 namespace ShoppingCartBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use ShoppingCartBundle\Entity\Cart;
 use ShoppingCartBundle\Entity\Product;
+use ShoppingCartBundle\Entity\User;
 use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -222,20 +224,45 @@ class ProductController extends Controller
         return $this->redirectToRoute('product_index');
     }
 
-//    /**
-//     * @Route("/{id}/add", name="product_add")
-//     *
-//     * @Method("GET", "POST")
-//     * @param Request $request
-//     * @param Product $id
-//     * @return void
-//     */
-//    public function addProduct(Request $request, Product $id)
-//    {
-//        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-//        $form = $this->createForm('ShoppingCartBundle\Form\ItemType', $product);
-//        $form->handleRequest($request);
-//
-//
-//    }
+    /**
+     * @Route("/{id}/order", name="product_order")
+     *
+     * @Method({"GET", "POST"})
+     * @param int $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function orderProduct(int $id,Request $request)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if (null === $product) {
+            return $this->redirectToRoute("product_index");
+        }
+
+        /**@var Cart */
+        $cart = new Cart();
+
+        /**@var User */
+        $currentUser = $this->getUser();
+        $cart->setUser($currentUser);
+
+
+        $orderForm = $this->createForm(Cart::class,[$product->getQuantity()]);
+        $orderForm->handleRequest($request);
+
+        if($orderForm->isSubmitted() && $orderForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product->getQuantity());
+            $em->flush();
+        }
+
+        $this->addFlash("success", $product->getQuantity() . $product->getName() . " successfully added.");
+
+        return $this->redirectToRoute('cart_index', [
+            'product' => $product,
+            'currentUser' => $currentUser,
+            'order_form' => $orderForm->createView()
+        ]);
+    }
 }

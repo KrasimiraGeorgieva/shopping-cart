@@ -33,7 +33,7 @@ class OrderProducts
     /**
      * Many OrderProducts have One Product.
      *
-     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="order_products")
+     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
@@ -41,7 +41,7 @@ class OrderProducts
     /**
      * Many OrderProducts have One Cart.
      *
-     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Cart", inversedBy="order_products")
+     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Cart", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      */
     private $cart;
