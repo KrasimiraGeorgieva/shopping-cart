@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#{% for ban in user.ban %}#}
+        {#<b>{{ ban_users }}</b>#}
+    {#{% endfor %}#}
+
+    {#{{ render(controller('ShoppingCartBundle:Admin:viewBanUser')) }}#}
+
+
+    <hr>
+    <h1>Ban Users</h1>
+
+    <hr>
+    <table  class="table table-striped">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Ban</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for index,user in users %}
+        <tr>
+            <td>{{ index + 1 }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.ban }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <a class="btn btn-default" href="{{ path('admin_panel') }}">Back</a>
+    <hr>
+{% endblock %}
+
