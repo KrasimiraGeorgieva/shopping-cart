@@ -50,10 +50,10 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash("info", "Wellcome " . $user->getFullName());
+            //$this->addFlash("info", "Wellcome " . $user->getFullName());
 
 
-          return $this->redirectToRoute('homepage');
+          return $this->redirectToRoute('security_login');
         }
         return $this->render('user/register.html.twig',['form' => $form->createView()]);
     }
@@ -75,7 +75,7 @@ class UserController extends Controller
 
         if ($form->isSubmitted()&& $form->isValid()) {
 
-            if (($user->getPassword() != $user->getConfirm()) || ($user->getNewPassword() != $user->getConfirm())) {
+            if ($user->getPassword() != $user->getConfirm()) {
                 //$form->addError(new FormError("Password mismatch"));
                 return $this->render('user/profile.html.twig', ['form' => $form->createView()]);
             }
@@ -105,26 +105,28 @@ class UserController extends Controller
     public function editProfileAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
 
-        $currentUser = $this->getUser();
-        $em = $this->getDoctrine()->getManager()->getRepository(User::class)->find($currentUser);
+        $user = $this->getUser();
+        //$em = $this->getDoctrine()->getManager()->getRepository(User::class)->find($currentUser);
 
-        $form = $this->createForm(UserEditType::class, $currentUser);
-        $form->remove('email');
-        $form->add('currentPassword', PasswordType::class, ['label' => 'Current password']);
+        $form = $this->createForm(UserEditType::class, $user);
+
+//        $form->remove('email');
+        //$form->add('currentPassword', PasswordType::class, ['label' => 'Current password']);
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && !$passwordEncoder->isPasswordValid($currentUser, $currentUser->getCurrentPassword())){
-            $form->get('currentPassword')->addError(new FormError('Password mismatch!'));
-        }
 
         if($form->isSubmitted() && $form->isValid()){
             //die();
 
-            $newPassword = $passwordEncoder->encodePassword($currentUser,$currentUser->getNewPassword());
-            $currentUser->setPassword($newPassword);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($currentUser);
-            $em->flush();
+//            if(!$passwordEncoder->isPasswordValid($currentUser, $currentUser->getCurrentPassword())){
+//                $form->get('currentPassword')->addError(new FormError('Password mismatch!'));
+//            }
+//
+//            $newPassword = $passwordEncoder->encodePassword($currentUser,$currentUser->getNewPassword());
+//            $currentUser->setPassword($newPassword);
+
+              $em = $this->getDoctrine()->getManager();
+//            $em->persist($currentUser);
+//            $em->flush();
 
             return $this->redirectToRoute('homepage');
         }

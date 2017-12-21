@@ -71,7 +71,7 @@ class Cart
     private $user;
 
     /**
-     * One Cart has Many OrderProducts.
+     * One Cart has Many OrderProductsType.
      *
      * @var OrderProducts[]|ArrayCollection
      *

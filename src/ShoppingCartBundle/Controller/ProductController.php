@@ -5,7 +5,6 @@ namespace ShoppingCartBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use ShoppingCartBundle\Entity\Cart;
 use ShoppingCartBundle\Entity\Product;
-use ShoppingCartBundle\Entity\User;
 use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -224,15 +223,15 @@ class ProductController extends Controller
         return $this->redirectToRoute('product_index');
     }
 
+
     /**
      * @Route("/{id}/order", name="product_order")
      *
      * @Method({"GET", "POST"})
      * @param int $id
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function orderProduct(int $id,Request $request)
+    public function orderProduct(int $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
@@ -240,29 +239,11 @@ class ProductController extends Controller
             return $this->redirectToRoute("product_index");
         }
 
-        /**@var Cart */
-        $cart = new Cart();
+        return $this->render('product/order.html.twig',
+            [
+                'product' => $product
+            ]
+        );
 
-        /**@var User */
-        $currentUser = $this->getUser();
-        $cart->setUser($currentUser);
-
-
-        $orderForm = $this->createForm(Cart::class,[$product->getQuantity()]);
-        $orderForm->handleRequest($request);
-
-        if($orderForm->isSubmitted() && $orderForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product->getQuantity());
-            $em->flush();
-        }
-
-        $this->addFlash("success", $product->getQuantity() . $product->getName() . " successfully added.");
-
-        return $this->redirectToRoute('cart_index', [
-            'product' => $product,
-            'currentUser' => $currentUser,
-            'order_form' => $orderForm->createView()
-        ]);
     }
 }

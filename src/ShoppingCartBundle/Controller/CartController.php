@@ -19,7 +19,7 @@ class CartController extends Controller
     public function indexAction(Request $request)
     {
 
-
+        //
 
 
         return $this->render('cart/index.html.twig');
