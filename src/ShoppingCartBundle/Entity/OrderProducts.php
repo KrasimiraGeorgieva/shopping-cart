@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
- * OrderProducts
+ * OrderProductsType
  *
  * @ORM\Table(name="order_products")
  * @ORM\Entity(repositoryClass="ShoppingCartBundle\Repository\OrderProductsRepository")
@@ -31,7 +31,7 @@ class OrderProducts
     private $quantity;
 
     /**
-     * Many OrderProducts have One Product.
+     * Many OrderProductsType have One Product.
      *
      * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
@@ -39,7 +39,7 @@ class OrderProducts
     private $product;
 
     /**
-     * Many OrderProducts have One Cart.
+     * Many OrderProductsType have One Cart.
      *
      * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Cart", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")

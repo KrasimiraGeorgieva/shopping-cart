@@ -58,8 +58,6 @@ class Product
      * @var string
      *
      * @ORM\Column(name="image", type="text", nullable=true)
-     * @Assert\NotBlank(message="Please, upload the product image as a JPG file.")
-     * @Assert\Image(mimeTypes={ "application/jpg" })
      *
      */
     private $image;
@@ -115,7 +113,7 @@ class Product
 
 
     /**
-     * One Product has Many OrderProducts.
+     * One Product has Many OrderProductsType.
      *
      * @var OrderProducts[]|ArrayCollection
      * @OneToMany(targetEntity="ShoppingCartBundle\Entity\OrderProducts", mappedBy="product")

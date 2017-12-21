@@ -14,13 +14,13 @@ class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$options['data']['username']
-        $builder
-            ->add('fullName', EntityType::class)
-            ->add('password', PasswordType::class, ['action' => 'password'])
-            ->add('confirm', PasswordType::class, ['action' => 'confirm'])
-            ->add('newPassword', PasswordType::class, ['action' => 'newPassword'])
-            ->add('wallet', NumberType::class);
+        //dump($options);
+        $builder;
+            //->add('fullName', EntityType::class)
+//            ->add('password', PasswordType::class, ['action' => 'password'])
+//            ->add('confirm', PasswordType::class, ['action' => 'confirm'])
+//            ->add('newPassword', PasswordType::class, ['action' => 'newPassword'])
+            //->add('wallet', NumberType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

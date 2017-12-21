@@ -11,4 +11,5 @@ namespace ShoppingCartBundle\Repository;
 class BanIpRepository extends \Doctrine\ORM\EntityRepository
 {
 
+
 }

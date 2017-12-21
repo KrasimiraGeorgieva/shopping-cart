@@ -15,6 +15,15 @@ class UserRepository extends EntityRepository
     //implements UserLoaderInterface
 {
 
+    public function findByBan()
+    {
+        return $this->createQueryBuilder("user")
+            ->where("user.ban = 1")
+            ->orderBy("user.fullName", "ASC")
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * Loads the user for the given username.
 //     *
