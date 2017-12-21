@@ -44,11 +44,11 @@
                         <ul class="nav navbar-nav navbar-right">
 
                             {% if app.user and app.getUser().isAdmin() %}
-                                {#<li>#}
-                                    {#<a href="#" class="navbar-brand">#}
-                                        {#Welcome {{ app.user.fullName }}#}
-                                    {#</a>#}
-                                {#</li>#}
+                                <li>
+                                    <a href="{{ path('ban_users') }}">
+                                        Ban Users
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{ path('admin_panel') }}">
                                         Admin Panel

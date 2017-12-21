@@ -18,6 +18,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-12 ">
+                        <label>Email</label>
                         {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
                         {#<input class="form-control" id="user_email" placeholder="Email" name="user[email]"#}
                                {#required type="email">#}
@@ -26,6 +27,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-12 ">
+                        <label>Full Name</label>
                         {{ form_widget(form.fullName, { 'attr': {'class': 'form-control'} }) }}
                         {#<input type="text" class="form-control" id="user_fullName" placeholder="Full Name" name="user[fullName]" required>#}
                     </div>
@@ -33,6 +35,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-12">
+                        <label>Password</label>
                         {{ form_widget(form.password, { 'attr': {'class': 'form-control'} }) }}
                         {#<input type="password" class="form-control" id="user_password_first" placeholder="Password" name="user[password]" required>#}
                     </div>
@@ -40,6 +43,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-12">
+                        <label>Confirm Password</label>
                         {{ form_widget(form.confirm, { 'attr': {'class': 'form-control'} }) }}
                         {#<input type="password" class="form-control" id="user_password_second" placeholder="Confirm Password" name="user[confirm]" required>#}
                     </div>

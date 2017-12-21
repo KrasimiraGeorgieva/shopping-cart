@@ -72,4 +72,33 @@
     </tbody>
 </table>
 
+    <hr>
+    <h1>Users</h1>
+
+    <hr>
+    <table  class="table table-striped">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Wallet</th>
+            <th>Ban</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for index,user in users %}
+        <tr>
+            <td>{{ index + 1 }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <th>{{ user.wallet }}</th>
+            <th>{{ user.ban }}</th>
+
+            {#<td><a class="btn btn-success" href="{{ path("admin_edit_user", {'id':user.id}) }}">Edit</a></td>#}
+            <td><a class="btn btn-danger" href="{{ path("admin_delete_user", {'id':user.id}) }}">Delete</a></td>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
