@@ -59,6 +59,9 @@ class Product
      *
      * @ORM\Column(name="image", type="text", nullable=true)
      *
+     * @Assert\File(
+     *     maxSize="700k",
+     *     mimeTypes={"image/png", "image/jpeg", "image/jpg"})
      */
     private $image;
 

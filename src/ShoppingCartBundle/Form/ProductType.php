@@ -13,9 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Tests\File\FileTest;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\ImageValidator;
 
 
 class ProductType extends AbstractType
@@ -29,8 +27,8 @@ class ProductType extends AbstractType
         $builder->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('price',NumberType::class, ['label' => 'Price'])
-            ->add('image', TextType::class)
-            //->add('image', FileType::class, ['label' => 'Image (JPG file)'])
+            //->add('image', TextType::class)
+            ->add('image', FileType::class, ['data_class' => null])
             ->add('quantity', NumberType::class)
             ->add('category', EntityType::class,[
                 'class' => Category::class,
