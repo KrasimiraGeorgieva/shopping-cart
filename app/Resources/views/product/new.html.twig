@@ -45,10 +45,13 @@
 
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="product_image">Image</label>
-                    <div class="col-sm-4 ">
-                        {{ form_widget(form.image, { 'attr': {'class': 'form-control'} }) }}
+                    {#<div class="col-sm-4 ">#}
+                        {#{{ form_widget(form.image, { 'attr': {'class': 'form-control'} }) }}#}
+                    {#</div>#}
+                    <div>
+                        {{ form_row(form.image) }}
+                    {#<img src="{{ asset('web/image/' ~ product.image) }}" width="150" height="100">View Image</img>#}
                     </div>
-                    {#<img src="{{ asset('uploads/image/' ~ product.image) }}" width="150" height="100">View Image</img>#}
                 </div>
 
                 <div class="form-group">
