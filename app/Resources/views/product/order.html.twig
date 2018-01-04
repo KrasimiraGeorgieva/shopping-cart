@@ -4,37 +4,33 @@
 
 {#<div class="container body-content span=8 offset=2">#}
     {#<div class="well">#}
-    <br>
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="https://placehold.it/150x80?text=IMAGE" class="thumbnail-img-responsive" style="width:100%" alt="{{ product.name }}" >
-            </div>
+<br>
+    <div class="row">
+        <div class="col-sm-4">
+            <img src="https://placehold.it/150x80?text=IMAGE" class="thumbnail-img-responsive" style="width:100%" alt="{{ product.name }}" >
+        </div>
 
-            <div class="col-sm-8">
+        <div class="col-sm-2">
+            <div class="form-group">
                 <h3>{{ product.name }}</h3>
-
                 <p>{{ product.description }}</p>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" for="product_quantity">Choose the quantity</label>
-                    <div class="col-sm-4 ">
-                        <input type="text" class="form-control" id="product_quantity" placeholder="Quantity"
-                               name="product[quantity]" value="{{ product.quantity }}">
-                    </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="product_quantity">Choose the quantity</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="product_quantity" placeholder="Quantity" name="product[quantity]" value="{{ product.quantity }}">
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-8 col-sm-offset-4">
-                        {#<div class="col-sm-6 col-sm-offset-4">#}
-                        <a type="submit" class="btn btn-default" href="{{ path('product_show', { 'id': product.id })
-                        }}">Back</a>
-
-
-                        {#<a type="submit" class="btn btn-primary" href="{{ path('product_order', {'id': product.id}) }}">Buy</a>#}
-                    </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <a type="submit" class="btn btn-default" href="{{ path('product_show', { 'id': product.id }) }}">Back</a>
+                    <a type="submit" class="btn btn-primary" href="{{ path('product_order', {'id': product.id}) }}">Buy</a>
                 </div>
             </div>
         </div>
-    <br>
-    {#<div>#}
-{#<div class="container body-content span=8 offset=2">#}
-
+    </div>
+<br>
 {% endblock %}
