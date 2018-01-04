@@ -6,7 +6,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use ShoppingCartBundle\Entity\User;
 use ShoppingCartBundle\Form\UserBanType;
-use ShoppingCartBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -57,11 +56,10 @@ class AdminController extends Controller
      * @Route("/user/{id}/delete", name="admin_delete_user")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_ADMIN')")
      *
-     * @param Request $request
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteUser(Request $request, int $id)
+    public function deleteUser(int $id)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('ShoppingCartBundle:User')->find($id);
@@ -94,7 +92,6 @@ class AdminController extends Controller
         if ($banUser === null){
             return $this->redirectToRoute("admin_panel");
         }
-
 
         $banUserForm = $this->createForm(UserBanType::class, $banUser);
         $banUserForm->handleRequest($request);

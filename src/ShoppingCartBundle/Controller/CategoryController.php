@@ -140,7 +140,7 @@ class CategoryController extends Controller
     public function deleteAction(Category $category, Request $request)
     {
         //$category = $this->getDoctrine()->getRepository(Category::class, $category);
-            dump($category);
+           // dump($category);
         if (null === $category){
             return $this->redirectToRoute("category_index");
         }
