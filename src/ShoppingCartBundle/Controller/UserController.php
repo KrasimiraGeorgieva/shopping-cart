@@ -20,6 +20,7 @@ class UserController extends Controller
 {
     /**
      * @Route("/register", name="user_register")
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -61,6 +62,7 @@ class UserController extends Controller
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/profile", name="user_profile")
+     *
      * @param Request $request
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
