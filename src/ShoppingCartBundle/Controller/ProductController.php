@@ -3,12 +3,13 @@
 namespace ShoppingCartBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use ShoppingCartBundle\Entity\Cart;
 use ShoppingCartBundle\Entity\Product;
 use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -50,19 +51,21 @@ class ProductController extends Controller
         $form = $this->createForm('ShoppingCartBundle\Form\ProductType', $product);
         $form->handleRequest($request);
 
-
+//
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            /** @var UploadedFile $file */
-//            $file = $product->getImage();
-//            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-//            $file->move(
-//                $this->getParameter('image_directory'),
-//                $fileName
-//            );
-//
-//            $product->setImage($fileName);
+            /** @var UploadedFile $file */
+            $file = $product->getImage();
+            //dump($file);die();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move(
+                $this->getParameter('image_directory'),
+                $fileName
+            );
 
+            $product->setImage($fileName);
+
+//
             $product->setClient($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
@@ -71,7 +74,9 @@ class ProductController extends Controller
 
             $this->addFlash("info", "Product " . $product->getName() . " was added successfully");
 
-            return $this->redirectToRoute('product_index');
+            //return $this->redirectToRoute('product_index');
+
+            return $this->redirect($this->generateUrl('product_index'));
         }
 
         return $this->render('product/new.html.twig', [
@@ -126,6 +131,9 @@ class ProductController extends Controller
     public function editAction(Request $request, $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $product->setImage(
+            new File($this->getParameter('image_directory').'/'.$product->getImage())
+        );
 
         if ($product === null){
             return $this->redirectToRoute("product_index");
