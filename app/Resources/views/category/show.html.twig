@@ -1,69 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="col-sm-12">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('category_show', { 'id': category.id }) }}" method="post">
+                <h1>{{ category.name }}</h1>
 
-<div class="col-sm-12">
-    <div class="well">
-        <form class="form-horizontal" action="{{ path('category_show', { 'id': category.id }) }}" method="post">
-    <h1 >{{ category.name }}</h1>
-
-        {#{{ form_row(form._token) }}#}
-        <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-8">
-                {% if app.getUser() and (app.getUser().isEditor() or app.getUser().isAdmin()) %}
-                <a type="submit" class="btn btn-primary" href="{{ path('category_new') }}">Add</a>
-                <a type="submit" class="btn btn-success" href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
-                <a class="btn btn-danger" href="{{ path('category_delete', {'id': category.id }) }}">Delete</a>
-                {% endif %}
-                <a class="btn btn-default" href="{{ path('category_index') }}">Back</a>
-
-            </div>
-        </div>
-        </form>
-    </div>
-        <hr>
-
-{#<table>#}
-    {##}
-        {#<div class="container-fluid">#}
-            {#<div class="row content">#}
-                {#<div class="col-sm-3">#}
-                    {#<ul class="nav nav-pills nav-stacked">#}
-                        {#<li class="active"><a href="{{ path('product_index') }}">Products</a></li>#}
-                        {#{% for product in category.products %}#}
-                        {#<li><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></li>#}
-                        {#{% endfor %}#}
-                    {#</ul>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-{#</table>#}
-{#<div class="col-sm-9">#}
-    <h2 >Products in {{ category.name }}</h2>
-    <hr>
-    {% for product in category.products %}
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></h4>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-8">
+                        {% if app.getUser() and (app.getUser().isEditor() or app.getUser().isAdmin()) %}
+                            <a type="submit" class="btn btn-primary" href="{{ path('category_new') }}">Add</a>
+                            <a type="submit" class="btn btn-success"
+                               href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
+                            <a class="btn btn-danger"
+                               href="{{ path('category_delete', {'id': category.id }) }}">Delete</a>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-                <div class="panel-footer" >Price: {{ product.price }}</div>
-                <div class="panel-footer">Description: {{ product.description }}</div>
-            </div>
+            </form>
+
+            <hr>
+        </div>
+
+        <hr/>
+        <h2>Products in {{ category.name }}</h2>
+        <hr/>
+    </div>
+    {% for product in category.products %}
+        <div class="col-md-4">
+            <article>
+                <header>
+                    <h3><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></h3>
+                </header>
+
+                <a href="{{ path('product_show', {'id':product.id} ) }}"><img src="{{ product.image }}"
+                                                                              class="img-rounded" style="width:100%"
+                                                                              width="200px" height="150px"/></a>
+                <p>Price: <strong>${{ product.price|number_format(2, '.', ',') }}</strong></p>
+                <p>Description: {{ product.description }}</p>
+                <small class="author">
+                    Creator: {{ product.client }}
+                </small>
+            </article>
         </div>
     {% endfor %}
-
-{#<div class="form-group">#}
-    {#<div class="col-sm-9 col-sm-offset-4">#}
-        {#<a class="btn btn-default btn-lg col-sm-2" href="{{ path('category_index') }}">Cancel</a>#}
-        {#{{ form_start(delete_form) }}#}
-        {#<input type="submit"  class="btn btn-danger btn-lg" value="Delete">#}
-        {#{{ form_end(delete_form) }}#}
-    {#</div>#}
-{#</div>#}
-</div>
-    </div>
-
 
 {% endblock %}

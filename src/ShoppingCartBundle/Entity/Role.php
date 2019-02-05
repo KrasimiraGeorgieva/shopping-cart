@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-
 /**
  * Role
  *
@@ -46,13 +45,12 @@ class Role implements RoleHierarchyInterface
         $this->users = new ArrayCollection();
     }
 
-
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -64,7 +62,7 @@ class Role implements RoleHierarchyInterface
      *
      * @return Role
      */
-    public function setName($name)
+    public function setName(string $name): Role
     {
         $this->name = $name;
 
@@ -76,7 +74,7 @@ class Role implements RoleHierarchyInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -91,9 +89,8 @@ class Role implements RoleHierarchyInterface
      *
      * @return string
      */
-    public function getReachableRoles(array $roles = null)
+    public function getReachableRoles(array $roles = null): string
     {
         return $this->getName();
     }
 }
-

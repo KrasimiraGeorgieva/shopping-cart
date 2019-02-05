@@ -5,6 +5,10 @@ namespace ShoppingCartBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class SecurityController
+ * @package ShoppingCartBundle\Controller
+ */
 class SecurityController extends Controller
 {
     /**
@@ -16,10 +20,11 @@ class SecurityController extends Controller
         $helper = $this->get('security.authentication_utils');
 
         if (null !== $helper->getLastAuthenticationError()) {
-            return $this->render('security/ban.html.twig', array(
-                'last_email' => $helper->getLastUsername(),
-                'error' => $helper->getLastAuthenticationError(),
-            ));
+            return $this->render('security/ban.html.twig',
+                [
+                    'last_email' => $helper->getLastUsername(),
+                    'error' => $helper->getLastAuthenticationError(),
+                ]);
         }
         return $this->render('security/login.html.twig');
     }

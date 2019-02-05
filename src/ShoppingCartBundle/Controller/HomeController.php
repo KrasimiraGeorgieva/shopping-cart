@@ -5,6 +5,10 @@ namespace ShoppingCartBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class HomeController
+ * @package ShoppingCartBundle\Controller
+ */
 class HomeController extends Controller
 {
     /**

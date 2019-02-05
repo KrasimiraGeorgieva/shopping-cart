@@ -4,11 +4,12 @@ namespace ShoppingCartBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use ShoppingCartBundle\Entity\User;
-use ShoppingCartBundle\Form\UserBanType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class AdminController
+ * @package ShoppingCartBundle\Controller
+ */
 class AdminController extends Controller
 {
     /**
@@ -29,15 +30,13 @@ class AdminController extends Controller
             [
                 'products' => $products,
                 'categories' => $categories,
-                'users'=>$users
-            ]
-        );
+                'users' => $users
+            ]);
     }
 
     /**
      * @Route("/admin/ban", name="ban_users")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_ADMIN')")
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewBanUser()
@@ -55,11 +54,10 @@ class AdminController extends Controller
     /**
      * @Route("/user/{id}/delete", name="admin_delete_user")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_ADMIN')")
-     *
-     * @param int $id
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteUser(int $id)
+    public function deleteUser($id)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('ShoppingCartBundle:User')->find($id);
@@ -71,46 +69,8 @@ class AdminController extends Controller
         $em->remove($user);
         $em->flush();
 
-        $this->addFlash("delete", "User " . $user->getFullName() . " was successfully deleted.");
+        $this->addFlash('delete', 'User ' . $user->getFullName() . ' was successfully deleted.');
 
         return $this->redirect($this->generateUrl('admin_panel'));
-
-    }
-
-    /**
-     * @Route("/user/{id}/ban", name="admin_edit_user")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function editBanUsers(Request $request, int $id)
-    {
-        $banUser = $this->getDoctrine()->getRepository(User::class)->find($id);
-
-        if ($banUser === null){
-            return $this->redirectToRoute("admin_panel");
-        }
-
-        $banUserForm = $this->createForm(UserBanType::class, $banUser);
-        $banUserForm->handleRequest($request);
-
-
-        if ($banUserForm->isSubmitted() && $banUserForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($banUser);
-            $em->flush();
-
-            $this->addFlash("info", "Product " . $banUser->getFullName() . " was edited successfully");
-
-            return $this->redirectToRoute('admin_panel', ['id' => $banUser->getId()]);
-        }
-        return $this->render('admin/admin_edit_user.html.twig',
-            [
-                'banUser' => $banUser,
-                'editBanForm' => $banUserForm->createView()
-            ]
-        );
     }
 }

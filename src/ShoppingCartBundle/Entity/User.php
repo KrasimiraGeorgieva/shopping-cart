@@ -62,6 +62,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $wallet;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="money_spent", type="decimal", precision = 10, scale = 2, nullable=true)
+     */
+    private $moneySpent;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="ban", type="boolean")
@@ -97,12 +104,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $carts;
 
     /**
-     * @var ArrayCollection|Review[]
+     * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\OrderProducts", mappedBy="user")
      */
-    private $reviews;
-
+    private $orderedProducts;
 
     /**
      * User constructor.
@@ -112,8 +118,9 @@ class User implements AdvancedUserInterface, \Serializable
         $this->products = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->carts = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
-        $this->setWallet(255.66);
+        $this->orderedProducts = new ArrayCollection();
+        $this->setWallet();
+        $this->moneySpent = 0;
         $this->ban = false;
     }
 
@@ -122,7 +129,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -134,7 +141,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setFullName(string $fullName)
+    public function setFullName(string $fullName): User
     {
         $this->fullName = $fullName;
 
@@ -174,7 +181,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setEmail($email)
+    public function setEmail(string $email): User
     {
         $this->email = $email;
 
@@ -198,7 +205,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
@@ -261,7 +268,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @param Role $role
      * @return User
      */
-    public function addRole(Role $role)
+    public function addRole(Role $role): User
     {
         $this->roles[] = $role;
         return $this;
@@ -275,53 +282,66 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->products;
     }
 
-//    /**
-//     * @param ArrayCollection|Product[] $products
-//     */
-//    public function setProducts($products): void
-//    {
-//        $this->products = $products;
-//    }
-
     /**
-     * @return ArrayCollection|Review[]
+     * @return ArrayCollection|Cart[]
      */
-    public function getReviews()
+    public function getCarts()
     {
-        return $this->reviews;
+        return $this->carts;
     }
 
     /**
-     * @param ArrayCollection|Review[] $reviews
+     * @param ArrayCollection|Cart[] $carts
+     * @return User
      */
-    public function setReviews($reviews)
+    public function setCarts($carts): User
     {
-        $this->reviews = $reviews;
+        $this->carts = $carts;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOrderedProducts()
+    {
+        return $this->orderedProducts;
+    }
+
+    /**
+     * @param ArrayCollection $orderedProducts
+     * @return User
+     */
+    public function setOrderedProducts($orderedProducts): User
+    {
+        $this->orderedProducts = $orderedProducts;
+        return $this;
     }
 
     /**
      * @param Product $product
      * @return bool
      */
-    public function isClient(Product $product)
+    public function isClient(Product $product): bool
     {
-        return $product->getClientId() == $this->getId();
+        return $product->getClientId() === $this->getId();
     }
 
     /**
      * @return bool
      */
-    public function isEditor()
+    public function isEditor(): bool
     {
-        return in_array("ROLE_EDITOR", $this->getRoles());
+        return in_array('ROLE_EDITOR', $this->getRoles(), true);
     }
 
     /**
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return in_array("ROLE_ADMIN", $this->getRoles());
+        return in_array('ROLE_ADMIN', $this->getRoles(), true);
     }
 
     /**
@@ -345,7 +365,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return float
      */
-    public function getWallet()
+    public function getWallet(): float
     {
         return $this->wallet;
     }
@@ -355,9 +375,28 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @param float $wallet
      */
-    public function setWallet( $wallet = 255.66)
+    public function setWallet(float $wallet = 255.66)
     {
         $this->wallet = $wallet;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMoneySpent(): float
+    {
+        return $this->moneySpent;
+    }
+
+    /**
+     * @param float $moneySpent
+     * @return User
+     */
+    public function setMoneySpent(float $moneySpent): User
+    {
+        $this->moneySpent = $moneySpent;
+
+        return $this;
     }
 
     /**
@@ -377,7 +416,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return string The username
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -451,9 +490,9 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @see DisabledException
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
-        if ($this->isBan() == true) {
+        if ($this->isBan() === true) {
             return false;
         }
         return true;

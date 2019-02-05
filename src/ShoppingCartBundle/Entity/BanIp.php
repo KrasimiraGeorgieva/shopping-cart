@@ -28,13 +28,12 @@ class BanIp
      */
     private $ipAddress;
 
-
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -46,7 +45,7 @@ class BanIp
      *
      * @return BanIp
      */
-    public function setIpAddress($ipAddress)
+    public function setIpAddress(string $ipAddress): BanIp
     {
         $this->ipAddress = $ipAddress;
 
@@ -58,9 +57,8 @@ class BanIp
      *
      * @return string
      */
-    public function getIpAddress()
+    public function getIpAddress(): string
     {
         return $this->ipAddress;
     }
 }
-

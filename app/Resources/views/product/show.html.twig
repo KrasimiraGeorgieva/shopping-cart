@@ -1,49 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container body-content span=8 offset=2">
+    <div>
         <div class="well">
             <form class="form-horizontal" action="{{ path('product_show', { 'id': product.id }) }}" method="post">
                 <fieldset>
-
-                    <div class="col-sm-4">
-                        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"><br>
-                            <a href="{{ path('product_order', {id: product.id}) }}" class="btn btn-primary btn-sm"
-                               style="padding-left: 230px;">Add to cart</a>
-
+                    <div>
+                        <div class="form-group">
+                            <div class="panel-footer"><h1>{{ product.name }}</h1></div>
+                            <div class="panel-body col-lg-offset-4"><img src="{{ product.image }}" class="img-rounded"
+                                                                         style="width:250px; height: 200px"
+                                                                         alt="Image"><br>
+                            </div>
                         </div>
-                        <div class="panel-footer"><h1 >{{ product.name }}</h1></div>
-                    </div>
-                    {#<div>#}
-
-                    {#</div>#}
-
-                    <div class="col-sm-8">
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_description">Description</label>
-                            <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="product_description" placeholder="Description" name="product[description]" value="{{ product.description }}" disabled>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="product_description"
+                                       placeholder="Description" name="product[description]"
+                                       value="{{ product.description }}" disabled>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_price">Price</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="product_price" placeholder="Price" name="product[price]" value="{{ product.price }}" disabled>
+                                <input type="text" class="form-control" id="product_price" placeholder="Price"
+                                       name="product[price]" value="{{ product.price }}" disabled>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_quantity">Quantity</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="product_quantity" placeholder="Quantity" name="product[quantity]" value="{{ product.quantity }}" disabled>
+                                <input type="text" class="form-control" id="product_quantity" placeholder="Quantity"
+                                       name="product[quantity]" value="{{ product.quantity }}" disabled>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_category">Category</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="product_category" placeholder="Category" name="product[category]" value="{{ product.category }}" disabled>
+                                <input type="text" class="form-control" id="product_category" placeholder="Category"
+                                       name="product[category]" value="{{ product.category }}" disabled>
                             </div>
                         </div>
 
@@ -51,32 +50,32 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="product_stock">Stock</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control"  value="{% if product.stock == 1 %}In Stock{% else
-                                %}Out of Stock{% endif %}" disabled>
+                                <input type="text" class="form-control"
+                                       value="{% if product.stock == 1 %}In Stock{% else %}Out of Stock{% endif %}"
+                                       disabled>
                             </div>
                         </div>
 
-                        {#<fieldset>#}
-                        {#<div class="form-group">#}
-                        {#<label class="col-sm-4 control-label" for="product_stock">In Stock / Out of Stock</label>#}
-                        {#<input type="checkbox" class="form-control" id="product_stock"  name="product[stock]" value="{{ product.stock }}" disabled>#}
-                        {#</div>#}
-                        {#</fieldset>#}
-
                         <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-4">
-
+                            <div class="col-sm-6 col-sm-offset-4">
                                 {% if app.getUser() and (app.getUser().isClient(product) or app.getUser().isAdmin() or app.getUser().isEditor()) %}
 
+                                    <a type="submit" class="btn btn-success"
+                                       href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
+                                    <a class="btn btn-danger"
+                                       href="{{ path('product_delete', {'id': product.id }) }}">Delete</a>
+                                    <a class="btn btn-primary"
+                                       href="{{ path('add_to_cart',{'id': product.id }) }}">Add to cart</a>
+                                {% elseif app.getUser() %}
+                                    <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
+                                    <a class="btn btn-primary"
+                                       href="{{ path('add_to_cart',{'id': product.id }) }}">Add to cart</a>
+                                {% else %}
 
-                                    <a type="submit" class="btn btn-success" href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
-                                    <a class="btn btn-danger" href="{{ path('product_delete', {'id': product.id }) }}">Delete</a>
-
+                                    <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
+                                    <a class="btn btn-primary"
+                                       href="{{ path('security_login',{'id': product.id }) }}">Add to cart</a>
                                 {% endif %}
-
-                                <a class="btn btn-default" href="{{ path('product_index') }}">Back</a>
-                                <a class="btn btn-primary" href="{{ path('product_order',{'id': product.id })
-                                }}">Add to cart</a>
                             </div>
                         </div>
                     </div>
@@ -85,68 +84,4 @@
         </div>
     </div>
 
-{#<div class="col-sm-6">#}
-    {#<div class="well">#}
-        {#<div class="col-sm-4">#}
-            {#<div class="panel panel-primary">#}
-                {#<div class="panel-heading">#}
-                    {#<h4><a href="{{ path('product_show', {'id':product.id} ) }}">{{ product.name }}</a></h4>#}
-                {#</div>#}
-                {#<div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>#}
-                {#<div class="panel-footer" >Price: {{ product.price }}</div>#}
-                {#<div class="panel-footer">Description: {{ product.description }}</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-{#</div>#}
-
-
-    {#<h1>Product</h1>#}
-
-    {#<table>#}
-        {#<tbody>#}
-            {#<tr>#}
-                {#<th>Id</th>#}
-                {#<td>{{ product.id }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Name</th>#}
-                {#<td>{{ product.name }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Description</th>#}
-                {#<td>{{ product.description }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Price</th>#}
-                {#<td>{{ product.price }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Image</th>#}
-                {#<td>{{ product.image }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Quantity</th>#}
-                {#<td>{{ product.quantity }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Category id</th>#}
-                {#<td>{{ product.categoryId }}</td>#}
-            {#</tr>#}
-        {#</tbody>#}
-    {#</table>#}
-
-    {#<ul>#}
-        {#<li>#}
-            {#<a href="{{ path('product_index') }}">Back to the list</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#<a href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#{{ form_start(delete_form) }}#}
-                {#<input type="submit" value="Delete">#}
-            {#{{ form_end(delete_form) }}#}
-        {#</li>#}
-    {#</ul>#}
 {% endblock %}

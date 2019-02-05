@@ -19,7 +19,6 @@ class CategoryController extends Controller
 {
     /**
      * Lists all category entities.
-     *
      * @Route("/", name="category_index")
      * @Method("GET")
      */
@@ -28,8 +27,13 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $categories = $em->getRepository('ShoppingCartBundle:Category')->findAll();
+        $products = $em->getRepository('ShoppingCartBundle:Product')->findAll();
 
-        return $this->render('category/index.html.twig', ['categories' => $categories,]);
+        return $this->render('category/index.html.twig',
+            [
+                'categories' => $categories,
+                'products' => $products,
+            ]);
     }
 
     /**
@@ -37,7 +41,6 @@ class CategoryController extends Controller
      *
      * @Route("/new", name="category_new")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -48,12 +51,10 @@ class CategoryController extends Controller
         $form = $this->createForm(CategoryType::class, $category);
 
         $currentUser = $this->getUser();
-        if(!$currentUser->isAdmin() && !$currentUser->isEditor()){
-            return $this->redirectToRoute("category_index");
+        if (!$currentUser->isAdmin() && !$currentUser->isEditor()) {
+            return $this->redirectToRoute('category_index');
         }
 
-//        $category = new Category();
-       //$form = $this->createForm('ShoppingCartBundle\Form\CategoryType', $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -61,39 +62,37 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            $this->addFlash("info", "Category " . $category->getName() . " was added successfully");
+            $this->addFlash('info', 'Category ' . $category->getName() . ' was added successfully');
 
-            return $this->redirectToRoute('category_index');
+            return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('category/new.html.twig', [
-            'category' => $category,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('category/new.html.twig',
+            [
+                'category' => $category,
+                'form' => $form->createView(),
+            ]);
     }
 
     /**
      * Finds and displays a category entity.
      *
      * @Route("/{id}", name="category_show")
-     *
      * @Method("GET")
-     * @param int $id
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(int $id)
+    public function showAction($id)
     {
         $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
 
-        if (null === $category){
-            return $this->redirectToRoute("category_index");
+        if (null === $category) {
+            return $this->redirectToRoute('category_index');
         }
         return $this->render('category/show.html.twig',
             [
                 'category' => $category,
-//                'form' => $form->createView(),
-            ]
-        );
+            ]);
     }
 
     /**
@@ -101,7 +100,6 @@ class CategoryController extends Controller
      *
      * @Route("/{id}/edit", name="category_edit")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Category $category
@@ -109,21 +107,22 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
-        $editForm = $this->createForm('ShoppingCartBundle\Form\CategoryType', $category);
+        $editForm = $this->createForm(CategoryType::class, $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash("info", "Category " . $category . " was successfully edited.");
-            return $this->redirectToRoute('category_index', ['id' => $category->getId()]);
+
+            $this->addFlash('info', 'Category ' . $category . ' was successfully edited.');
+
+            return $this->redirectToRoute('category_show', ['id' => $category->getId()]);
         }
 
         return $this->render('category/edit.html.twig',
             [
-            'category' => $category,
-            'edit_form' => $editForm->createView(),
-            ]
-        );
+                'category' => $category,
+                'edit_form' => $editForm->createView(),
+            ]);
     }
 
     /**
@@ -132,46 +131,39 @@ class CategoryController extends Controller
      * @Method({"GET", "POST"})
      * @Route("/{id}/delete", name="category_delete")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @param Request $request
      * @param Category $category
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(Category $category, Request $request)
     {
-        //$category = $this->getDoctrine()->getRepository(Category::class, $category);
-           // dump($category);
-        if (null === $category){
-            return $this->redirectToRoute("category_index");
+        if (null === $category) {
+            return $this->redirectToRoute('category_index');
         }
 
-        
         $currentUser = $this->getUser();
 
-        if(!$currentUser->isEditor() && !$currentUser->isAdmin()){
-            return $this->redirectToRoute("category_index");
+        if (!$currentUser->isEditor() && !$currentUser->isAdmin()) {
+            return $this->redirectToRoute('category_index');
         }
 
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
-            //dump($category);
-           // dump($category->getName());
             $em->remove($category);
             $em->flush();
 
-            $this->addFlash("info", "Category " . $category . " was successfully deleted.");
+            $this->addFlash('info', 'Category ' . $category . ' was successfully deleted.');
 
-            return $this->redirectToRoute('category_index');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('category/delete.html.twig',
             [
                 'category' => $category,
                 'delete_form' => $form->createView()
-            ]
-        );
+            ]);
     }
 }

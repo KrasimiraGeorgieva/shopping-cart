@@ -8,41 +8,44 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class CategoryType
+ * @package ShoppingCartBundle\Form
+ */
 class CategoryType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $category = $options['data'];
-        $builder->add('name',TextType::class,
+        $builder->add('name', TextType::class,
             [
-                'label' =>'Name',
+                'label' => 'Name',
                 'data' => $category->getName()
             ]
         );
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-            'data_class' => Category::class
+                'data_class' => Category::class
             ]
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'shoppingcartbundle_category';
     }
-
-
 }

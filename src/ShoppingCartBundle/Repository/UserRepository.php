@@ -2,7 +2,6 @@
 
 namespace ShoppingCartBundle\Repository;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
  * UserRepository
@@ -11,36 +10,13 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * repository methods below.
  */
 class UserRepository extends EntityRepository
-
-    //implements UserLoaderInterface
 {
-
     public function findByBan()
     {
-        return $this->createQueryBuilder("user")
-            ->where("user.ban = 1")
-            ->orderBy("user.fullName", "ASC")
+        return $this->createQueryBuilder('user')
+            ->where('user.ban = 1')
+            ->orderBy('user.fullName', 'ASC')
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * Loads the user for the given username.
-//     *
-//     * This method must return null if the user is not found.
-//     *
-//     * @param string $username The username
-//     *
-//     * @return void
-//     * @throws \Doctrine\ORM\NonUniqueResultException
-//     */
-//    public function loadUserByUsername($username)
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->where('u.username = :username OR u.email = :email')
-//            ->setParameter('username', $username)
-//            ->setParameter('email', $username)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
 }

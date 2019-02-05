@@ -1,18 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {#{% for ban in user.ban %}#}
-        {#<b>{{ ban_users }}</b>#}
-    {#{% endfor %}#}
-
-    {#{{ render(controller('ShoppingCartBundle:Admin:viewBanUser')) }}#}
-
 
     <hr>
     <h1>Ban Users</h1>
 
     <hr>
-    <table  class="table table-striped">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>№</th>
@@ -33,4 +27,3 @@
     <a class="btn btn-default" href="{{ path('admin_panel') }}">Back</a>
     <hr>
 {% endblock %}
-

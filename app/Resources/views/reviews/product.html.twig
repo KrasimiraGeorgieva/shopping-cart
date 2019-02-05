@@ -1,7 +1,0 @@
-{% for review in product.reviews %}
-    <b>{{ review.comment }}</b> | Rank: {{ review.rating }} <br/>
-{% endfor %}
-
-{{ render(controller('ShoppingCartBundle:Review:ReviewForm', {'id': product.id})) }}
-
-<a href="{{ path('all_products') }}">Back to products list</a>

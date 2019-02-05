@@ -1,11 +1,12 @@
 <?php
-declare (strict_types =1);
+
 namespace ShoppingCartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Product
@@ -59,9 +60,6 @@ class Product
      *
      * @ORM\Column(name="image", type="text", nullable=true)
      *
-     * @Assert\File(
-     *     maxSize="700k",
-     *     mimeTypes={"image/png", "image/jpeg", "image/jpg"})
      */
     private $image;
 
@@ -71,13 +69,6 @@ class Product
      * @ORM\Column(name="stock", type="integer", nullable=false)
      */
     private $stock;
-
-//    /**
-//     * @var bool
-//     *
-//     * @ORM\Column(name="owner_of_product", type="boolean")
-//     */
-//    private $ownerOfProduct;
 
     /**
      * @var int
@@ -89,7 +80,7 @@ class Product
     /**
      * @var int
      *
-     *@ORM\Column(name="category_id", type="integer")
+     * @ORM\Column(name="category_id", type="integer")
      */
     private $categoryId;
 
@@ -114,37 +105,29 @@ class Product
      */
     private $client;
 
-
     /**
      * One Product has Many OrderProductsType.
      *
      * @var OrderProducts[]|ArrayCollection
      * @OneToMany(targetEntity="ShoppingCartBundle\Entity\OrderProducts", mappedBy="product")
      */
-    private $orderProducts;
-
+    private $orderedProducts;
 
     /**
-     * One Product has Many Reviews.
+     * One Product has Many Carts.
      *
-     * @var Review[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="ShoppingCartBundle\Entity\Review", mappedBy="product")
+     * @var ArrayCollection
+     * @OneToMany(targetEntity="ShoppingCartBundle\Entity\Cart", mappedBy="product")
      */
-    private $reviews;
-
-//    /**
-//     * @var string
-//     * @ORM\Column(name="slug", type="string", length=255)
-//     */
-//    private $slug;
+    private $productCarts;
 
     /**
      * Product constructor.
      */
     public function __construct()
     {
-        $this->reviews = new ArrayCollection();
-        $this->orderProducts = new ArrayCollection();
+        $this->productCarts = new ArrayCollection();
+        $this->orderedProducts = new ArrayCollection();
         $this->stock = 1;
     }
 
@@ -153,7 +136,7 @@ class Product
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -165,7 +148,7 @@ class Product
      *
      * @return Product
      */
-    public function setName($name)
+    public function setName($name): Product
     {
         $this->name = $name;
 
@@ -189,7 +172,7 @@ class Product
      *
      * @return Product
      */
-    public function setDescription($description)
+    public function setDescription($description): Product
     {
         $this->description = $description;
 
@@ -213,7 +196,7 @@ class Product
      *
      * @return Product
      */
-    public function setPrice($price)
+    public function setPrice($price): Product
     {
         $this->price = $price;
 
@@ -237,7 +220,7 @@ class Product
      *
      * @return Product
      */
-    public function setImage($image)
+    public function setImage($image): Product
     {
         $this->image = $image;
 
@@ -266,32 +249,12 @@ class Product
      * @param int $stock
      * @return Product
      */
-    public function setStock(int $stock)
+    public function setStock(int $stock): Product
     {
         $this->stock = $stock;
 
         return $this;
     }
-
-//    /**
-//     * @return bool
-//     */
-//    public function getOwnerOfProduct(): bool
-//    {
-//        return $this->ownerOfProduct;
-//    }
-//
-//    /**
-//     * @param bool $ownerOfProduct
-//     *
-//     * @return Product
-//     */
-//    public function setOwnerOfProduct(bool $ownerOfProduct)
-//    {
-//        $this->ownerOfProduct = $ownerOfProduct;
-//
-//        return $this;
-//    }
 
     /**
      * Set quantity
@@ -300,7 +263,7 @@ class Product
      *
      * @return Product
      */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity): Product
     {
         $this->quantity = $quantity;
 
@@ -330,7 +293,7 @@ class Product
      *
      * @return Product
      */
-    public function setCategoryId(int $categoryId):Product
+    public function setCategoryId(int $categoryId): Product
     {
         $this->categoryId = $categoryId;
 
@@ -350,7 +313,7 @@ class Product
      *
      * @return Product
      */
-    public function setCategory(Category $category = null)
+    public function setCategory(Category $category = null): Product
     {
         $this->category = $category;
 
@@ -360,17 +323,17 @@ class Product
     /**
      * @return int
      */
-    public function getClientId()
+    public function getClientId(): int
     {
         return $this->clientId;
     }
 
     /**
-     * @param int $clientId
+     * @param $clientId
      *
      * @return Product
      */
-    public function setClientId(int $clientId)
+    public function setClientId(int $clientId): Product
     {
         $this->clientId = $clientId;
 
@@ -390,7 +353,7 @@ class Product
      *
      * @return Product
      */
-    public function setClient(User $client = null)
+    public function setClient(User $client = null): Product
     {
         $this->client = $client;
 
@@ -398,55 +361,34 @@ class Product
     }
 
     /**
-     * @return ArrayCollection|Review[]
+     * @return ArrayCollection
      */
-    public function getReviews()
+    public function getProductCarts(): ArrayCollection
     {
-        return $this->reviews;
+        return $this->productCarts;
     }
 
     /**
-     * @param ArrayCollection|Review[] $reviews
-     * @return Product
+     * @param ArrayCollection $productCarts
      */
-    public function setReviews($reviews)
+    public function setProductCarts(ArrayCollection $productCarts)
     {
-        $this->reviews = $reviews;
-
-        return $this;
+        $this->productCarts = $productCarts;
     }
 
     /**
      * @return ArrayCollection|OrderProducts[]
      */
-    public function getOrderProducts()
+    public function getOrderedProducts()
     {
-        return $this->orderProducts;
+        return $this->orderedProducts;
     }
 
     /**
-     * @param ArrayCollection|OrderProducts[] $orderProducts
+     * @param ArrayCollection|OrderProducts[] $orderedProducts
      */
-    public function setOrderProducts($orderProducts)
+    public function setOrderedProducts($orderedProducts)
     {
-        $this->orderProducts = $orderProducts;
+        $this->orderedProducts = $orderedProducts;
     }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getSlug(): string
-//    {
-//        return $this->slug;
-//    }
-//
-//    /**
-//     * @param string $slug
-//     */
-//    public function setSlug(string $slug)
-//    {
-//        $this->slug = $slug;
-//    }
-
 }
-

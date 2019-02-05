@@ -11,38 +11,49 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class UserType
+ * @package ShoppingCartBundle\Form
+ */
 class UserType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$options['data']['username']
         /**
          * @var User $user
          */
         $user = $options['data'];
-        //dump($user->getFullName()); dump($user->getEmail());
         $builder
-            ->add("email", EmailType::class, array(
-                'data'=> $user->getEmail()
-            ))
-            ->add("fullName", TextType::class, array(
+            ->add('email', EmailType::class, [
+                'data' => $user->getEmail()
+            ])
+            ->add('fullName', TextType::class, [
                 'data' => $user->getFullName()
-            ))
-            ->add("password", PasswordType::class)
-            ->add("confirm", PasswordType::class)
-            ->add('submit',SubmitType::class);
+            ])
+            ->add('password', PasswordType::class)
+            ->add('confirm', PasswordType::class)
+            ->add('submit', SubmitType::class);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-            'data_class' => User::class
-            ]
-        );
+                'data_class' => User::class
+            ]);
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return 'shopping_cart_bundle_user_type';
     }

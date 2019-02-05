@@ -2,11 +2,9 @@
 
 namespace ShoppingCartBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Cart
@@ -26,39 +24,11 @@ class Cart
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="hash", type="string", length=255)
-     */
-    private $hash;
-
-    /**
-     * @var double
-     *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2)
-     */
-    private $total;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="paid", type="boolean")
-     */
-    private $paid;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_date", type="datetime")
      */
     private $createdDate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_date", type="datetime")
-     */
-    private $updatedDate;
 
     /**
      * Many Cart has One User.
@@ -71,32 +41,27 @@ class Cart
     private $user;
 
     /**
-     * One Cart has Many OrderProductsType.
+     * @var Product
      *
-     * @var OrderProducts[]|ArrayCollection
-     *
-     * @OneToMany(targetEntity="ShoppingCartBundle\Entity\OrderProducts", mappedBy="cart")
+     * @ORM\ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="productCarts")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $orderProducts;
+    private $product;
 
     /**
-     * Many Carts has One Contact.
+     * @var bool
      *
-     * @var Contact $contact
-     *
-     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Contact", inversedBy="carts")
-     * @JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\Column(name="is_deleted", type="boolean")
      */
-    private $contact;
+    private $isDeleted;
 
     /**
      * Cart constructor.
      */
     public function __construct()
     {
-        $this->orderProducts = new ArrayCollection();
         $this->createdDate = new \DateTime('now');
-        $this->paid = 0;
+        $this->isDeleted = false;
     }
 
     /**
@@ -104,81 +69,9 @@ class Cart
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * Set hash
-     *
-     * @param string $hash
-     *
-     * @return Cart
-     */
-    public function setHash($hash)
-    {
-        $this->hash = $hash;
-
-        return $this;
-    }
-
-    /**
-     * Get hash
-     *
-     * @return string
-     */
-    public function getHash()
-    {
-        return $this->hash;
-    }
-
-    /**
-     * Set total
-     *
-     * @param string $total
-     *
-     * @return Cart
-     */
-    public function setTotal($total)
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
-    /**
-     * Get total
-     *
-     * @return string
-     */
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    /**
-     * Set paid
-     *
-     * @param boolean $paid
-     *
-     * @return Cart
-     */
-    public function setPaid($paid)
-    {
-        $this->paid = $paid;
-
-        return $this;
-    }
-
-    /**
-     * Get paid
-     *
-     * @return bool
-     */
-    public function getPaid()
-    {
-        return $this->paid;
     }
 
     /**
@@ -188,7 +81,7 @@ class Cart
      *
      * @return Cart
      */
-    public function setCreatedDate($createdDate)
+    public function setCreatedDate($createdDate): Cart
     {
         $this->createdDate = $createdDate;
 
@@ -200,48 +93,24 @@ class Cart
      *
      * @return \DateTime
      */
-    public function getCreatedDate()
+    public function getCreatedDate(): \DateTime
     {
         return $this->createdDate;
     }
 
     /**
-     * Set updatedDate
-     *
-     * @param \DateTime $updatedDate
-     *
-     * @return Cart
-     */
-    public function setUpdatedDate($updatedDate)
-    {
-        $this->updatedDate = $updatedDate;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedDate
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedDate()
-    {
-        return $this->updatedDate;
-    }
-
-    /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
     /**
-     * @param ArrayCollection|User[] $user
+     * @param User $user
      * @return Cart
      */
-    public function setUser($user)
+    public function setUser(User $user): Cart
     {
         $this->user = $user;
 
@@ -249,35 +118,34 @@ class Cart
     }
 
     /**
-     * @return ArrayCollection|OrderProducts[]
+     * @return Product
      */
-    public function getOrderProducts()
+    public function getProduct(): Product
     {
-        return $this->orderProducts;
+        return $this->product;
     }
 
     /**
-     * @param ArrayCollection|OrderProducts[] $orderProducts
+     * @param Product $product
      */
-    public function setOrderProducts($orderProducts)
+    public function setProduct(Product $product)
     {
-        $this->orderProducts = $orderProducts;
+        $this->product = $product;
     }
 
     /**
-     * @return Contact
+     * @return bool
      */
-    public function getContact()
+    public function isDeleted(): bool
     {
-        return $this->contact;
+        return $this->isDeleted;
     }
 
     /**
-     * @param ArrayCollection|Contact[] $contact
+     * @param bool $isDeleted
      */
-    public function setContact($contact)
+    public function setIsDeleted(bool $isDeleted)
     {
-        $this->contact = $contact;
+        $this->isDeleted = $isDeleted;
     }
 }
-

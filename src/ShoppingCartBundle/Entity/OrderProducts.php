@@ -24,60 +24,71 @@ class OrderProducts
     private $id;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="quantity", type="integer")
+     * @ORM\Column(name="created_date", type="datetime")
      */
-    private $quantity;
+    private $createdDate;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_deleted", type="boolean")
+     */
+    private $isDeleted;
 
     /**
      * Many OrderProductsType have One Product.
      *
-     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="orderProducts")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Product", inversedBy="orderedProducts")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;
 
     /**
-     * Many OrderProductsType have One Cart.
+     * @var User
      *
-     * @ManyToOne(targetEntity="ShoppingCartBundle\Entity\Cart", inversedBy="orderProducts")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ShoppingCartBundle\Entity\User", inversedBy="orderedProducts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $cart;
+    private $user;
+
+    /**
+     * OrderProducts constructor.
+     */
+    public function __construct()
+    {
+        $this->createdDate = new \DateTime('now');
+        $this->isDeleted = false;
+    }
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Set quantity
-     *
-     * @param integer $quantity
-     *
-     * @return OrderProducts
+     * @return \DateTime
      */
-    public function setQuantity($quantity)
+    public function getCreatedDate(): \DateTime
     {
-        $this->quantity = $quantity;
-
-        return $this;
+        return $this->createdDate;
     }
 
     /**
-     * Get quantity
-     *
-     * @return int
+     * @param \DateTime $createdDate
+     * @return OrderProducts
      */
-    public function getQuantity()
+    public function setCreatedDate(\DateTime $createdDate): OrderProducts
     {
-        return $this->quantity;
+        $this->createdDate = $createdDate;
+
+        return $this;
     }
 
     /**
@@ -90,26 +101,50 @@ class OrderProducts
 
     /**
      * @param Product $product
+     * @return OrderProducts
      */
-    public function setProduct($product)
+    public function setProduct($product): OrderProducts
     {
         $this->product = $product;
+
+        return $this;
     }
 
     /**
-     * @return Cart[]|ArrayCollection
+     * @return User
      */
-    public function getCart()
+    public function getUser(): User
     {
-        return $this->cart;
+        return $this->user;
     }
 
     /**
-     * @param Cart $cart
+     * @param User $user
+     * @return OrderProducts
      */
-    public function setCart($cart)
+    public function setUser(User $user): OrderProducts
     {
-        $this->cart = $cart;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param bool $isDeleted
+     * @return OrderProducts
+     */
+    public function setIsDeleted(bool $isDeleted): OrderProducts
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 }
-

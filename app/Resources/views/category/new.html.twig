@@ -14,48 +14,20 @@
                         <div class="col-sm-4 ">
                             {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
                         </div>
-                    {#</div>#}
-                    {#<div class="form-group">#}
-                        {#<div class="col-sm-12 ">#}
-                            {#<input type="text" class="form-control" id="category_name" placeholder="Name" name="category[name]">#}
-                        {#</div>#}
-                    {#</div>#}
-                    {#<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>#}
                     </div>
+
                     {{ form_row(form._token) }}
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
-                            <a class="btn btn-default" href="{{ path('category_index') }}">Cancel</a>
+                            <a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
-                        {{ form_end(form) }}
+                    {{ form_end(form) }}
+
                 </fieldset>
             </form>
         </div>
     </div>
-
-{#<div class="col-sm-6">#}
-    {#<div class="well">#}
-        {#<h1>Category creation</h1>#}
-
-        {#{{ form_start(form) }}<br>#}
-        {#<fieldset>#}
-            {#{{ form_widget(form) }}#}
-        {#<br>#}
-        {#</fieldset>#}
-        {#<div class="form-group">#}
-            {#<div class="col-sm-12 col-sm-offset-2">#}
-                {#<a class="btn btn-default" href="{{ path('category_index') }}">Back</a>#}
-            {#<input class="btn btn-primary" type="submit" value="Create"/>#}
-            {#</div>#}
-        {#</div>#}
-
-        {#{{ form_end(form) }}#}
-{#<p>#}
-    {#<a class="btn btn-default btn-sm pull-right" href="{{ path('category_index') }}">Back to the list</a>#}
-{#</p>#}
-    {#</div>#}
-{#</div>#}
 
 {% endblock %}

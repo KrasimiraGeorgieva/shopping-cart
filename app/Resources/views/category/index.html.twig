@@ -1,41 +1,14 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-<div class="col-sm-12">
-    <div class="well">
-    <h1>Categories list</h1>
-
-            {#<h1 style="color:red">{{ msg }}</h1>#}
-    </div>
-    <hr>
-    <table class="table table-striped" style="border: #3be6c4">
-        <thead>
-            <tr>
-                <th style="padding-right: 10px"><h4>No</h4></th>
-                <th style="padding-right: 70px"><h4>Name</h4></th>
-                <th style="padding-right: 70px"> </th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for index,category in categories %}
-            <tr>
-                <td><h5>{{ index + 1 }}</h5></td>
-                <td><h5>{{ category.name }}</h5></td>
-                <td>
-                    <ul>
-                        <a class="btn btn-default btn-sm" href="{{ path('category_show', { 'id': category.id }) }}">view category</a>
-                        {#<a class="btn btn-success btn-xs"  href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>#}
-                        {#<a class="btn btn-danger btn-xs" href="{{ path('category_delete', { 'id': category.id }) }}">Delete</a>#}
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {#<ul>#}
-        {#<a class="btn btn-default btn-lg" href="{{ path('category_new') }}">Add category</a>#}
-    {#</ul>#}
-
-</div>
-
-{% endblock %}
+<table class="table table-responsive table-bordered">
+    <thead>
+    <tr>
+        <th class="active">All categories</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for index,category in categories %}
+        <tr>
+            <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.name }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

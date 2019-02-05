@@ -36,6 +36,9 @@ class Category
      */
     private $products;
 
+    /**
+     * Category constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -46,7 +49,7 @@ class Category
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -58,7 +61,7 @@ class Category
      *
      * @return Category
      */
-    public function setName($name)
+    public function setName($name): Category
     {
         $this->name = $name;
 
@@ -75,9 +78,10 @@ class Category
         return $this->name;
     }
 
+
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string)$this->getName();
     }
 
     /**
@@ -87,7 +91,4 @@ class Category
     {
         return $this->products;
     }
-
-
 }
-

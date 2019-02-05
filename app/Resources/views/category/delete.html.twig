@@ -9,9 +9,10 @@
                     <legend>Delete Category</legend>
 
                     <div class="form-group">
-                    <label class="col-sm-4 control-label" for="category_name">Name</label>
+                        <label class="col-sm-4 control-label" for="category_name">Name</label>
                         <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="category_name" name="category[name]" value="{{ category.name }}" disabled>
+                            <input type="text" class="form-control" id="category_name"
+                                   name="category[name]" value="{{ category.name }}" disabled>
                         </div>
                     </div>
 
@@ -20,7 +21,7 @@
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" href="{{ path('category_show', {id: category.id}) }}">Cancel</a>
-                            <input type="submit"  class="btn btn-danger" value="Delete">
+                            <input type="submit" class="btn btn-danger" value="Delete">
                         </div>
                     </div>
                 </fieldset>
@@ -29,4 +30,3 @@
     </div>
 
 {% endblock %}
-

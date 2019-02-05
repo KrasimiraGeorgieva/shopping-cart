@@ -8,8 +8,6 @@ use ShoppingCartBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,6 +22,7 @@ class ProductController extends Controller
      *
      * @Route("/", name="product_index")
      * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
@@ -40,7 +39,6 @@ class ProductController extends Controller
      *
      * @Route("/new", name="product_new")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -48,73 +46,46 @@ class ProductController extends Controller
     public function newAction(Request $request)
     {
         $product = new Product();
-        $form = $this->createForm('ShoppingCartBundle\Form\ProductType', $product);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-//
         if ($form->isSubmitted() && $form->isValid()) {
-
-            /** @var UploadedFile $file */
-            $file = $product->getImage();
-            //dump($file);die();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move(
-                $this->getParameter('image_directory'),
-                $fileName
-            );
-
-            $product->setImage($fileName);
-
-//
             $product->setClient($this->getUser());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
 
-            $this->addFlash("info", "Product " . $product->getName() . " was added successfully");
+            $this->addFlash('info', 'Product ' . $product->getName() . ' was added successfully');
 
-            //return $this->redirectToRoute('product_index');
-
-            return $this->redirect($this->generateUrl('product_index'));
+            return $this->redirectToRoute('product_index');
         }
 
-        return $this->render('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('product/new.html.twig',
+            [
+                'product' => $product,
+                'form' => $form->createView(),
+            ]);
     }
-
-//    /**
-//     * @Route("/new", name="product_new_image")
-//     */
-//    public function showImage()
-//    {
-//        $image = $this->getDoctrine()->getRepository('ShoppingCartBundle:Product')->find(1);
-//
-//        return $this->render('product/new.html.twig', ['product' => $image]);
-//    }
 
     /**
      * Finds and displays a product entity.
      *
      * @Route("/{id}", name="product_show")
-     *
      * @Method("GET")
-     * @param int $id
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(int $id)
+    public function showAction($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        if (null === $product){
-            return $this->redirectToRoute("product_index");
+        if (null === $product) {
+            return $this->redirectToRoute('product_index');
         }
 
-        return $this->render('product/show.html.twig', [
-            'product' => $product,
-
-        ]);
+        return $this->render('product/show.html.twig',
+            [
+                'product' => $product,
+            ]);
     }
 
     /**
@@ -122,26 +93,22 @@ class ProductController extends Controller
      *
      * @Route("/{id}/edit", name="product_edit")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @Method({"GET", "POST"})
      * @param Request $request
-     * @param int $id
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        $product->setImage(
-            new File($this->getParameter('image_directory').'/'.$product->getImage())
-        );
 
-        if ($product === null){
-            return $this->redirectToRoute("product_index");
+        if ($product === null) {
+            return $this->redirectToRoute('product_index');
         }
 
         $currentUser = $this->getUser();
-        if(!$currentUser->isClient($product) && !$currentUser->isAdmin() && !$currentUser->isEditor()){
-            return $this->redirectToRoute("product_index");
+        if (!$currentUser->isClient($product) && !$currentUser->isAdmin() && !$currentUser->isEditor()) {
+            return $this->redirectToRoute('product_index');
         }
 
         $editForm = $this->createForm(ProductType::class, $product);
@@ -152,7 +119,7 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
-            $this->addFlash("info", "Product " . $product->getName() . " was edited successfully");
+            $this->addFlash('info', 'Product ' . $product->getName() . ' was edited successfully');
 
             return $this->redirectToRoute('product_index', ['id' => $product->getId()]);
         }
@@ -161,8 +128,7 @@ class ProductController extends Controller
             [
                 'product' => $product,
                 'edit_form' => $editForm->createView(),
-            ]
-        );
+            ]);
     }
 
     /**
@@ -171,30 +137,27 @@ class ProductController extends Controller
      * @Route("/{id}/delete", name="product_delete")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Method("GET")
-     *
      * @param Product $id
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-        if (null === $product){
-            return $this->redirectToRoute("product_index");
+        if (null === $product) {
+            return $this->redirectToRoute('product_index');
         }
 
         $currentUser = $this->getUser();
-        if(!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()){
+        if (!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()) {
 
-            return $this->redirectToRoute("product_index");
+            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('product/delete.html.twig',
             [
                 'product' => $product
-            ]
-        );
+            ]);
     }
 
     /**
@@ -202,56 +165,29 @@ class ProductController extends Controller
      *
      * @Route("/{id}/delete/process", name="product_delete_process")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
-     *
-     * @param int $id
-     *
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteProcessAction($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-        if (null === $product){
-            return $this->redirectToRoute("product_index");
+        if (null === $product) {
+            return $this->redirectToRoute('product_index');
         }
 
         $currentUser = $this->getUser();
-        if(!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()){
+        if (!$currentUser->isClient($product) && !$currentUser->isEditor() && !$currentUser->isAdmin()) {
 
-            return $this->redirectToRoute("product_index");
+            return $this->redirectToRoute('product_index');
         }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($product);
         $em->flush();
 
-        $this->addFlash("delete", "Product " . $product->getName() . " was successfully deleted.");
+        $this->addFlash('delete', 'Product ' . $product->getName() . ' was successfully deleted.');
 
         return $this->redirectToRoute('product_index');
-    }
-
-
-    /**
-     * @Route("/{id}/order", name="product_order")
-     *
-     * @Method({"GET", "POST"})
-     * @param int $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function orderProduct(int $id)
-    {
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-
-        if (null === $product) {
-            return $this->redirectToRoute("product_index");
-        }
-
-        return $this->render('product/order.html.twig',
-            [
-                'product' => $product
-            ]
-        );
-
     }
 }

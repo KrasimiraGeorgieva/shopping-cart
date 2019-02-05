@@ -10,24 +10,12 @@ namespace ShoppingCartBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
-
     public function findByQuantity()
     {
-//        $em = $this->getEntityManager();
-//        $query = $em->createQuery(
-//            'SELECT p
-//    FROM ShoppingCartBundle:Product p
-//    WHERE p.quantity > :quantity
-//    ORDER BY p.quantity ASC'
-//        )->setParameter('quantity');
-//
-//        return $query->getResult();
-
-        return $this->createQueryBuilder("product")
-            ->where("product.quantity > 0")
-            ->orderBy("product.price", "ASC")
+        return $this->createQueryBuilder('product')
+            ->where('product.quantity > 0')
+            ->orderBy('product.price', 'ASC')
             ->getQuery()
             ->getResult();
-
     }
 }
