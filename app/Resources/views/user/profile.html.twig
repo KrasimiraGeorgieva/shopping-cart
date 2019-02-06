@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="user_fullName">Full Name</label>
                         <div class="col-sm-4 ">
-                            {{ form_widget(form.fullName, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_widget(form.fullName, { 'attr': {'disabled':'disabled'} }) }}
                         </div>
                     </div>
                     <hr>
@@ -28,7 +28,7 @@
                         <label class="col-sm-4 control-label" for="user_password_second">Wallet</label>
                         <div class="col-sm-4">
                             <input type="number" class="form-control" id="user_wallet" name="user[wallet]"
-                                   value="{{ user.wallet }}">
+                                   value="{{ user.wallet }}" disabled>
                         </div>
                     </div>
 
@@ -36,7 +36,6 @@
                     <div class="form-group">
                         <div class="col-sm-12 col-sm-offset-4">
                             <a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </fieldset>
