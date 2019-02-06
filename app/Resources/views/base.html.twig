@@ -30,11 +30,11 @@
             <div class="container">
                 <div class="navbar-header">
                     <a href="{{ path('homepage') }}" class="navbar-brand">SHOPPING CART</a>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+					{% if app.user %}
+                        <a href="#" class="navbar-brand">
+                            Welcome, {{ app.user.fullName }}
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
