@@ -90,11 +90,10 @@ class CartController extends Controller
             ->findOneBy(['user' => $user, 'product' => $product, 'isDeleted' => false]);
         $productFromCart->setIsDeleted(true);
 
-        if($product->getQuantity() <= 0) {
-            $product->setStock(0);
-        }
         $product->setQuantity($product->getQuantity() + 1);
-
+        if($product->getQuantity() === 1) {
+            $product->setStock(1);
+        }
         $em = $this->getDoctrine()->getManager();
         $em->persist($productFromCart);
         $em->persist($product);
@@ -122,7 +121,9 @@ class CartController extends Controller
         $user->setWallet($user->getWallet() - $product->getPrice());
 
         $product->setQuantity($product->getQuantity() - 1);
-
+        if($product->getQuantity() <= 0) {
+            $product->setStock(0);
+        }
         $em = $this->getDoctrine()->getManager();
         $em->persist($orderProduct);
         $em->persist($user);
