@@ -383,7 +383,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @return float
      */
-    public function getMoneySpent(): float
+    public function getMoneySpent()
     {
         return $this->moneySpent;
     }
