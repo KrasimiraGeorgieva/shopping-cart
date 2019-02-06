@@ -5,20 +5,20 @@ Design and implement a **Shopping cart** using **PHP (Symfony)** and **HTML / CS
 ## Build technologies:
 
 ### PHP 7.1.7
-* **Symfony 3.4.22** framework
+* **Symfony 3.4** framework
 * **Twig** view engine
 * **Doctrine** ORM
 * **MariaDB** database
 
 ## Requirements
 
-### **Use PHP** – the major part should be PHP written
-- Symfony Framework** **must be used
+### The major part should be **PHP** written
+- **Symfony Framework** must be used
 - Additionally to create the content and to stylize web applicationuse can be used **HTML5, CSS3, Twig**
-- **PHP 7+** is **must be used
+- **PHP 7+** must be used
 
 ### **User source control system**
-- **GitHub or other source control system as project collaboration platform
+- **GitHub** or other source control system as project collaboration platform
 
 ### **Valid and high-quality PHP, HTML and CSS**
 - Following the best practices for PHP development
