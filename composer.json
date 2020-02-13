@@ -1,5 +1,5 @@
 {
-    "name": "symfony/symfony",symfony/symfony
+    "name": "symfony/symfony",
     "license": "proprietary",
     "type": "project",
     "autoload": {
